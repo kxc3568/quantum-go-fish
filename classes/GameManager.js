@@ -10,14 +10,18 @@ class GameManager {
         return this.games.get(code);
     }
 
-    createGame(player) {
+    createGame(socket, nickname) {
         const gameCode = this.generateCode();
-        this.games.set(gameCode, new Game(player));
+        this.games.set(gameCode, new Game(socket, nickname));
         return gameCode;
     }
 
     removeGame(code) {
         this.games.delete(code);
+    }
+
+    start(code) {
+
     }
 }
 

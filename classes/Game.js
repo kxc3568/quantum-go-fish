@@ -2,15 +2,15 @@ const Player = require('./Player');
 
 class Game {
     
-    constructor(player) {
+    constructor(socket, nickname) {
+        this.players = [new Player(socket, nickname)];
+    }
+
+    addPlayer(socket, nickname) {
         
     }
 
-    addPlayer(player) {
-        
-    }
-
-    removePlayer(player) {
+    removePlayer(nickname) {
 
     }
 

@@ -22,7 +22,7 @@ app.use('/g/', gameRouter);
 app.io = io;
 const GameManager = require('./classes/GameManager');
 app.gm = new GameManager();
-require('./utils/io-init')(app);
+require('./server-io-init')(app);
 
 // catch 404 and forward to error handler
 app.use((req, res, next) => {
