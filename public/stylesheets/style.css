@@ -3,6 +3,16 @@ html, body {
     height: 99%;
 }
 
+button {
+    background-color: white;
+    padding: 0.5rem;
+    border-radius: 0.5rem;
+}
+
+button:hover {
+    border-style: dashed;
+}
+
 .landingContainer {
     display: flex;
     flex-direction: column;
@@ -14,16 +24,6 @@ html, body {
 .landingForm form {
     margin: 0.5rem;
     display: block;
-}
-
-.landingForm form button {
-    background-color: white;
-    padding: 0.5rem;
-    border-radius: 0.5rem;
-}
-
-.landingForm form button:hover {
-    border-style: dashed;
 }
 
 @media (min-width: 1024px) {
