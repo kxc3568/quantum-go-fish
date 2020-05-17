@@ -1,0 +1,11 @@
+extends layout
+
+block content
+    .landingContainer
+        p image
+        h1 Quantum Go Fish
+        .landingForm
+            form(action="/create")
+                button(type="submit") Create a game
+            form(action="/join")
+                button(type="submit") Join a game

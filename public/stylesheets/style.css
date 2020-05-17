@@ -1,0 +1,33 @@
+html, body {
+    width: 99%;
+    height: 99%;
+}
+
+.landingContainer {
+    display: flex;
+    flex-direction: column;
+    height: 85vh;
+    align-items: center;
+    justify-content: center;
+}
+
+.landingForm form {
+    margin: 0.5rem;
+    display: block;
+}
+
+.landingForm form button {
+    background-color: white;
+    padding: 0.5rem;
+    border-radius: 0.5rem;
+}
+
+.landingForm form button:hover {
+    border-style: dashed;
+}
+
+@media (min-width: 1024px) {
+    .landingForm form {
+        display: inline;
+    }
+}
