@@ -2,15 +2,15 @@ const express = require('express');
 const router = express.Router();
 
 /* GET home page. */
-router.get('/', function(req, res, next) {
+router.get('/', (req, res) => {
     res.render('index');
 });
 
-router.get('/create', function(req, res, next) {
+router.get('/create', (req, res) => {
     res.render('create');
 });
 
-router.get('/join', function(req, res, next) {
+router.get('/join', (req, res) => {
     res.render('join');
 });
 

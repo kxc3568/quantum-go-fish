@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 
-router.get('/:gameId', function(req, res, next) {
+router.get('/:gameId', (req, res) => {
     res.render('game', { code: req.params.gameId });
 });
 
