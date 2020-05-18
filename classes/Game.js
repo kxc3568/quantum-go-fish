@@ -7,12 +7,21 @@ class Game {
     }
 
     /**
+     * Retrieves list of current players
+     */
+    getPlayers() {
+        return this.players;
+    }
+
+    /**
      * Creates a new player and adds it to the current game
      * @param {Socket} sid 
      * @param {String} nickname 
      */
     addPlayer(sid, nickname) {
-        
+        const newPlayer = new Player(sid, nickname);
+        this.players.push(newPlayer);
+        return newPlayer;
     }
 
     /**

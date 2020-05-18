@@ -1,28 +1,34 @@
 extends layout
 
 block content
-    #landingContainer
+    #landing-container.content-container
         p image
         h1 Quantum Go Fish
-        .landingForm
-            button(type="button" onclick="createGameView()") Create a game
-            button(type="button" onclick="joinGameView()") Join a game
+        .landing-form
+            button(type="button" onclick="createGameView();") Create a game
+            button(type="button" onclick="joinGameView();") Join a game
 
-    #createGameContainer.hidden
-        .createGameForm
+    #create-game-container.content-container.hidden
+        .create-game-form
             label(for="createName") Name:
-            input(name="createName" placeholder="Enter your name" id="createName")
-            button(type="button" onclick="createGame()") Create game
-            button(type="button" onclick="toHomeView()") Back to Home
+            input(name="createName" placeholder="Enter your name" id="create-name")
+            span(class="hidden" id="invalid-create-name") Please enter a 2-15 character name.
+            button(type="button" onclick="createGame(); toLobbyView();") Create game
+            button(type="button" onclick="toHomeView();") Back to Home
 
-    #joinGameContainer.hidden
-        .joinGameForm
+    #join-game-container.content-container.hidden
+        .join-game-form
             label(for="code") Game code:
-            input(name="code" placeholder="Enter your game code" id="joinCode")
+            input(name="code" placeholder="Enter your game code" id="join-code")
             label(for="joinName") Name:
-            input(name="joinName" placeholder="Enter your name" id="joinName")
-            button(type="button" onclick="joinGame()") Join game
-            button(type="button" onclick="toHomeView()") Back to Home
+            input(name="joinName" placeholder="Enter your name" id="join-name")
+            span(class="hidden" id="invalid-join-name") Please enter a 2-15 character name.
+            button(type="button" onclick="joinGame(); toLobbyView();") Join game
+            button(type="button" onclick="toHomeView();") Back to Home
+
+    #game-lobby-container.content-container.hidden
+        h1.add-code
+        ul(id="player-list")
 
 block scripts
     script(src="/javascripts/viewLogic.js")

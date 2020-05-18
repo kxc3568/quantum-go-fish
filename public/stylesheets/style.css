@@ -19,7 +19,7 @@ button:hover {
     border-style: dashed;
 }
 
-#landingContainer {
+#landing-container {
     display: flex;
     flex-direction: column;
     height: 85vh;
@@ -28,7 +28,7 @@ button:hover {
 }
 
 @media (min-width: 900px) {
-    .landingForm button {
+    .landing-form button {
         display: inline;
     }
 }

@@ -33,7 +33,6 @@ class GameManager {
     createGame(sid, nickname) {
         const gameCode = this.generateCode();
         this.games.set(gameCode, new Game(sid, nickname));
-        console.log("the code", gameCode, "from", nickname);
         return gameCode;
     }
 
