@@ -1,15 +1,30 @@
 extends layout
 
 block content
-    .landingContainer
+    #landingContainer
         p image
         h1 Quantum Go Fish
         .landingForm
-            form(action="/create")
-                button(type="submit") Create a game
-            form(action="/join")
-                button(type="submit") Join a game
+            button(type="button" onclick="createGameView()") Create a game
+            button(type="button" onclick="joinGameView()") Join a game
+
+    #createGameContainer.hidden
+        .createGameForm
+            label(for="createName") Name:
+            input(name="createName" placeholder="Enter your name" id="createName")
+            button(type="button" onclick="createGame()") Create game
+            button(type="button" onclick="toHomeView()") Back to Home
+
+    #joinGameContainer.hidden
+        .joinGameForm
+            label(for="code") Game code:
+            input(name="code" placeholder="Enter your game code" id="joinCode")
+            label(for="joinName") Name:
+            input(name="joinName" placeholder="Enter your name" id="joinName")
+            button(type="button" onclick="joinGame()") Join game
+            button(type="button" onclick="toHomeView()") Back to Home
 
 block scripts
+    script(src="/javascripts/viewLogic.js")
     script(src="/socket.io/socket.io.js")
     script(src="/javascripts/gameLogic.js")
