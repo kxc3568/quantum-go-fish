@@ -4,7 +4,6 @@ const path = require('path');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 const indexRouter = require('./routes/index');
-const gameRouter = require('./routes/game');
 const app = express();
 const io = require('socket.io')();
 
@@ -18,7 +17,6 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use('/', indexRouter);
-app.use('/g/', gameRouter);
 app.io = io;
 const GameManager = require('./classes/GameManager');
 app.gm = new GameManager();
