@@ -29,6 +29,11 @@ block content
     #game-lobby-container.content-container.hidden
         h1.add-code
         ul(id="player-list")
+        button(type="button" onclick="startGame(); toGameView();") Start Game
+    
+    #game-container.content-container.hidden
+        h1.add-code
+        p the game
 
 block scripts
     script(src="/javascripts/viewLogic.js")

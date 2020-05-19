@@ -68,14 +68,15 @@ const joinGame = () => {
  * Pings the server socket to start the game for all players
  */
 const startGame = () => {
-
+    const code = document.getElementsByClassName("add-code")[0].innerHTML;
+    socket.emit("Start Game", { code: code });
 };
 
 /**
  * Initializes client socket message listeners
  * @param {Socket} socket 
  */
-const socketInit = (socket) => {
+const socketInit = () => {
     socket.on("Room Code", code => populateCode(code));
     socket.on("Update Players", players => updatePlayerList(players));
 };
