@@ -10,11 +10,14 @@ const onJoinGame = (app, data, clientSocket) => {
     const game = app.gm.getGame(data.code);
     game.addPlayer(data.sid, data.nickname);
     const players = game.getPlayers();
+    app.io.to(clientSocket.id).emit("Room Code", data.code);
     app.io.in(data.code).emit("Update Players", players);
 };
 
 const onStartGame = (app, data, clientSocket) => {
-    app.gm.startGame(data.code);
+    const game = app.gm.startGame(data.code);
+    app.io.in(data.code).emit("Game Started");
+    app.io.in(data.code).emit("Update Hands", game.getHands());
 };
 
 const serverSocket = (app) => {

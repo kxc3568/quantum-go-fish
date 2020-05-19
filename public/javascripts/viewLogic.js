@@ -41,12 +41,3 @@ const toLobbyView = () => {
     let toShow = document.getElementById("game-lobby-container");
     toShow.style.display = "block";
 };
-
-/**
- * Changes to the view of the started game
- */
-const toGameView = () => {
-    hideAll();
-    let toShow = document.getElementById("game-container");
-    toShow.style.display = "block";
-};

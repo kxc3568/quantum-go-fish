@@ -51,7 +51,9 @@ class GameManager {
      * @param {String} code     The code of the game to start
      */
     startGame(code) {
-        this.getGame(code).start();
+        const game = this.getGame(code);
+        game.start();
+        return game;
     }
 }
 

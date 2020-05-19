@@ -17,11 +17,18 @@ class Player {
     }
 
     /**
+     * Retrieves the player's hand
+     */
+    getHand() {
+        return this.hand;
+    }
+
+    /**
      * Determines one of the player's cards to be the given suit
      * @param {String} suit     The suit that the card is determined to be
      */
     determine(suit) {
-        this.hand.determine(suit);
+        this.getHand().determine(suit);
     }
 
     /**
@@ -30,7 +37,7 @@ class Player {
      * @param {String} suit     The suit that the cards are determined not to be
      */
     narrow(suit) {
-        this.hand.narrow(suit);
+        this.getHand().narrow(suit);
     }
 
     /**
@@ -39,8 +46,8 @@ class Player {
      * @param {String} suit     The suit of the card being transferred
      */
     transferCard(player, suit) {
-        this.hand.loseCard(suit);
-        player.hand.addCard(suit);
+        this.getHand().loseCard(suit);
+        player.getHand().addCard(suit);
     }
 }
 
