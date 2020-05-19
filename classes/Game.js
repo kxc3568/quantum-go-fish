@@ -1,8 +1,10 @@
 const Player = require('./Player');
+const Round = require('./Round');
 
 class Game {
     
     constructor(sid, nickname) {
+        this.currentRound = null;
         this.players = [new Player(sid, nickname)];
     }
 
@@ -33,10 +35,10 @@ class Game {
     }
 
     /**
-     * Starts the game for all players
+     * Starts a new game round for all players
      */
-    startGame() {
-
+    start() {
+        this.currentRound = new Round(this.players, {});
     }
 }
 

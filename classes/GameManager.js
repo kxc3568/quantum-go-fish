@@ -48,8 +48,8 @@ class GameManager {
      * Starts the Game associated with the given code
      * @param {String} code 
      */
-    start(code) {
-
+    startGame(code) {
+        this.getGame(code).start();
     }
 }
 
