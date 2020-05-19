@@ -22,15 +22,16 @@ const validName = (nickname) => {
  * Updates the lobby player list with the given nickname
  * @param {String} nickname 
  */
-const updatePlayerList = (nickname) => {
+const updatePlayerList = (players) => {
     const playerList = document.getElementById("player-list");
-    const playerItem = document.createElement("li");
-    playerItem.appendChild(document.createTextNode(nickname));
-    playerList.appendChild(playerItem);
-};
-
-const addInitialPlayers = (players) => {
-    players.forEach(player => updatePlayerList(player.nickname));
+    while (playerList.lastElementChild) {
+        playerList.removeChild(playerList.lastElementChild);
+    }
+    players.forEach((player) => {
+        const playerItem = document.createElement("li");
+        playerItem.appendChild(document.createTextNode(player.nickname));
+        playerList.appendChild(playerItem);
+    });
 };
 
 /**
@@ -40,7 +41,6 @@ const addInitialPlayers = (players) => {
 const createGame = () => {
     const nickname = document.getElementById("create-name").value;
     if (validName(nickname)) {
-        updatePlayerList(nickname);
         socket.emit("Create Game", { sid: socket.id, nickname: nickname });
     } else {
         const nameError = document.getElementById("invalid-create-name");
@@ -77,8 +77,7 @@ const startGame = () => {
  */
 const socketInit = (socket) => {
     socket.on("Room Code", code => populateCode(code));
-    socket.on("Initial State", players => addInitialPlayers(players));
-    socket.on("Update Players", nickname => updatePlayerList(nickname));
+    socket.on("Update Players", players => updatePlayerList(players));
 };
 
 const socket = io.connect();

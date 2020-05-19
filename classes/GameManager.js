@@ -18,22 +18,22 @@ class GameManager {
      * Generates a new, unique game code
      */
     generateCode() {
-        let gameCode = "";
+        let code = "";
         do {
             for (let i = 0; i < 4; i++) {
-                gameCode += String.fromCharCode(Math.floor(Math.random() * 26 + 97));
+                code += String.fromCharCode(Math.floor(Math.random() * 26 + 97));
             }
-        } while (this.getGame(gameCode) !== undefined)
-        return gameCode;
+        } while (this.getGame(code) !== undefined)
+        return code;
     }
 
     /**
      * Creates a new game from a player's credentials
      */
     createGame(sid, nickname) {
-        const gameCode = this.generateCode();
-        this.games.set(gameCode, new Game(sid, nickname));
-        return gameCode;
+        const code = this.generateCode();
+        this.games.set(code, new Game(sid, nickname));
+        return { code: code, players: this.games.get(code).getPlayers() };
     }
 
     /**
