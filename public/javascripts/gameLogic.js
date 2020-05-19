@@ -60,14 +60,22 @@ const populateCode = (code) => {
 };
 
 /**
+ * Removes all the children of the given HTML element
+ * @param {HTMLElement} el 
+ */
+const removeAllChildren = (el) => {
+    while (el.lastElementChild) {
+        el.removeChild(playerList.lastElementChild);
+    }
+}
+
+/**
  * Updates the lobby player list with the given nickname
  * @param {String} players      The list of current players in the game
  */
 const updatePlayerList = (players) => {
     const playerList = document.getElementById("player-list");
-    while (playerList.lastElementChild) {
-        playerList.removeChild(playerList.lastElementChild);
-    }
+    removeAllChildren(playerList);
     players.forEach((player) => {
         const playerItem = document.createElement("li");
         playerItem.appendChild(document.createTextNode(player.nickname));
@@ -108,9 +116,11 @@ const appendHandToElement = (el, hand) => {
  */
 const updateHands = (hands) => {
     const handList = document.getElementById("other-players");
+    removeAllChildren(handList);
     Object.keys(hands).forEach((sid) => {
         if (sid == socket.id) {
             const yourHand = document.getElementById("your-hand");
+            removeAllChildren(yourHand);
             appendHandToElement(yourHand, hands[sid]);
         } else {
             const playerHand = document.createElement("li");

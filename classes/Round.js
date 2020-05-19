@@ -15,6 +15,14 @@ class Round {
     }
 
     /**
+     * Advances the round turn to the next player
+     */
+    advanceTurn() {
+        this.turn += 1;
+        this.turn %= this.players.length;
+    }
+
+    /**
      * Determines values of playerFrom's hand based on the question
      * @param {Player} playerFrom   The player that asked the question
      * @param {String} suit         The suit that is being asked

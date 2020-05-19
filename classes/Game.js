@@ -49,6 +49,13 @@ class Game {
     start() {
         this.currentRound = new Round(this.players, { suits: ['1', '2', '3'] });
     }
+
+    /**
+     * Retrieves the current round of the game
+     */
+    getRound() {
+        return this.currentRound;
+    }
 }
 
 module.exports = Game;
