@@ -1,6 +1,6 @@
 /**
  * Populates game code fields with the given code
- * @param {String} code 
+ * @param {String} code     The code of the game
  */
 const populateCode = (code) => {
     const elementsToAdd = Array.from(document.getElementsByClassName("add-code"));
@@ -9,7 +9,7 @@ const populateCode = (code) => {
 
 /**
  * Determines if the nickname given is valid
- * @param {String} nickname 
+ * @param {String} nickname     The proposed nickname
  */
 const validName = (nickname) => {
     if (nickname.length > 1 && nickname.length < 16) {
@@ -20,7 +20,7 @@ const validName = (nickname) => {
 
 /**
  * Updates the lobby player list with the given nickname
- * @param {String} nickname 
+ * @param {String} players      The list of current players in the game
  */
 const updatePlayerList = (players) => {
     const playerList = document.getElementById("player-list");
@@ -73,8 +73,7 @@ const startGame = () => {
 };
 
 /**
- * Initializes client socket message listeners
- * @param {Socket} socket 
+ * Initializes the global client socket message listeners
  */
 const socketInit = () => {
     socket.on("Room Code", code => populateCode(code));

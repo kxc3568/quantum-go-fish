@@ -17,8 +17,8 @@ class Game {
 
     /**
      * Creates a new player and adds it to the current game
-     * @param {Socket} sid 
-     * @param {String} nickname 
+     * @param {Socket} sid          The ID of the socket associated with the player
+     * @param {String} nickname     The nickname of the player
      */
     addPlayer(sid, nickname) {
         const newPlayer = new Player(sid, nickname);
@@ -28,7 +28,7 @@ class Game {
 
     /**
      * Removes the player associated with the given nickname from the game
-     * @param {String} nickname 
+     * @param {String} nickname     The nickname of the player
      */
     removePlayer(nickname) {
 
@@ -38,7 +38,7 @@ class Game {
      * Starts a new game round for all players
      */
     start() {
-        this.currentRound = new Round(this.players, {});
+        this.currentRound = new Round(this.players, { suits: ['1', '2', '3'] });
     }
 }
 

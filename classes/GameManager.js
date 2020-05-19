@@ -8,7 +8,7 @@ class GameManager {
 
     /**
      * returns the Game object associated with the given code and undefined if there is no existing game
-     * @param {String} code 
+     * @param {String} code     The code of the game to retrieve
      */
     getGame(code) {
         return this.games.get(code);
@@ -29,6 +29,8 @@ class GameManager {
 
     /**
      * Creates a new game from a player's credentials
+     * @param {Socket ID} sid       ID of the socket associated with the player that created the game
+     * @param {String} nickname     The player that created the game's nickname
      */
     createGame(sid, nickname) {
         const code = this.generateCode();
@@ -38,7 +40,7 @@ class GameManager {
 
     /**
      * Removes the Game associated with the given code from the list of active games
-     * @param {String} code 
+     * @param {String} code     The code of the game to be deleted
      */
     removeGame(code) {
         this.games.delete(code);
@@ -46,7 +48,7 @@ class GameManager {
 
     /**
      * Starts the Game associated with the given code
-     * @param {String} code 
+     * @param {String} code     The code of the game to start
      */
     startGame(code) {
         this.getGame(code).start();
