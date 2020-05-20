@@ -14,15 +14,6 @@ class Game {
     getPlayers() {
         return this.players;
     }
-    
-    /**
-     * Retrieves the hands of the current players
-     */
-    getHands() {
-        const hands = {};
-        this.getPlayers().forEach(player => hands[player.sid] = { nickname: player.nickname, hand: player.getHand() });
-        return hands;
-    }
 
     /**
      * Creates a new player and adds it to the current game

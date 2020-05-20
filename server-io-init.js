@@ -17,7 +17,9 @@ const onJoinGame = (app, data, clientSocket) => {
 const onStartGame = (app, data, clientSocket) => {
     const game = app.gm.startGame(data.code);
     app.io.in(data.code).emit("Game Started");
-    app.io.in(data.code).emit("Update Hands", game.getHands());
+    const round = game.getRound();
+    app.io.in(data.code).emit("Update Hands", round.getHands());
+    app.io.in(data.code).emit("Update Turn", round.getPlayers()[round.advanceTurn()]);
 };
 
 const serverSocket = (app) => {

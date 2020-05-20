@@ -8,6 +8,22 @@ class Round {
     }
 
     /**
+     * Retrieves list of current players
+     */
+    getPlayers() {
+        return this.players;
+    }
+
+    /**
+     * Retrieves the hands of the current players
+     */
+    getHands() {
+        const hands = {};
+        this.getPlayers().forEach(player => hands[player.sid] = { nickname: player.nickname, hand: player.getHand() });
+        return hands;
+    }
+
+    /**
      * Initialize starting settings and hands for the round
      */
     startRound() {
@@ -20,6 +36,7 @@ class Round {
     advanceTurn() {
         this.turn += 1;
         this.turn %= this.players.length;
+        return this.turn;
     }
 
     /**
