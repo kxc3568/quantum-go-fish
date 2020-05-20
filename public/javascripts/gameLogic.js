@@ -130,6 +130,18 @@ const updateHands = (hands) => {
     });
 };
 
+const updateTurn = (player) => {
+    const turnContainer = document.getElementById("turn-container");
+    removeAllChildren(turnContainer);
+    let turnText;
+    if (player.sid == socket.id) {
+        turnText = "Your turn";
+    } else {
+        turnText = "Waiting for " + player.nickname + " to make a move...";
+    }
+    turnContainer.appendChild(document.createTextNode(turnText));
+};
+
 /**
  * Initializes the global client socket message listeners
  */
@@ -138,6 +150,7 @@ const socketInit = () => {
     socket.on("Update Players", players => updatePlayerList(players));
     socket.on("Game Started", toGameView);
     socket.on("Update Hands", hands => updateHands(hands));
+    socket.on("Update Turn", player => updateTurn(player));
 };
 
 const socket = io.connect();

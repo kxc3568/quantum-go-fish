@@ -19,7 +19,11 @@ button:hover {
     border-style: dashed;
 }
 
-#landing-container {
+input {
+    margin-bottom: 1rem;
+}
+
+.nav-container {
     display: flex;
     flex-direction: column;
     height: 85vh;
@@ -28,7 +32,7 @@ button:hover {
 }
 
 @media (min-width: 900px) {
-    .landing-form button {
+    .submit-btn button {
         display: inline;
     }
 }

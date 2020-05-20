@@ -12,7 +12,7 @@ const hideAll = () => {
 const createGameView = () => {
     hideAll();
     let toShow = document.getElementById("create-game-container");
-    toShow.style.display = "block";
+    toShow.style.display = "flex";
 };
 
 /**
@@ -21,7 +21,7 @@ const createGameView = () => {
 const joinGameView = () => {
     hideAll();
     let toShow = document.getElementById("join-game-container");
-    toShow.style.display = "block";
+    toShow.style.display = "flex";
 };
 
 /**

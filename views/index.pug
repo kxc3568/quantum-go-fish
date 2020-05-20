@@ -1,30 +1,42 @@
 extends layout
 
+block styles
+    link(rel="stylesheet", href="/stylesheets/main.css")
+    link(rel="stylesheet", href="/stylesheets/landing.css")
+    link(rel="stylesheet", href="/stylesheets/create-join.css")
+
 block content
-    #landing-container.content-container
+    #landing-container.content-container.nav-container
         p image
         h1 Quantum Go Fish
-        .landing-form
+        .landing-form.submit-btn
             button(type="button" onclick="createGameView();") Create a game
             button(type="button" onclick="joinGameView();") Join a game
 
-    #create-game-container.content-container.hidden
+    #create-game-container.content-container.nav-container.hidden
         .create-game-form
-            label(for="createName") Name:
-            input(name="createName" placeholder="Enter your name" id="create-name")
-            span(class="hidden" id="invalid-create-name") Please enter a 2-15 character name.
-            button(type="button" onclick="createGame(); toLobbyView();") Create game
-            button(type="button" onclick="toHomeView();") Back to Home
+            h1 Create a Game
+            div
+                label(for="createName") Name:
+                input(name="createName" placeholder="Enter your name" id="create-name")
+                span(class="hidden" id="invalid-create-name") Please enter a 2-15 character name.
+            .submit-btn
+                button(type="button" onclick="createGame(); toLobbyView();") Create game
+                button(type="button" onclick="toHomeView();") Back to Home
 
-    #join-game-container.content-container.hidden
+    #join-game-container.content-container.nav-container.hidden
         .join-game-form
-            label(for="code") Game code:
-            input(name="code" placeholder="Enter your game code" id="join-code")
-            label(for="joinName") Name:
-            input(name="joinName" placeholder="Enter your name" id="join-name")
-            span(class="hidden" id="invalid-join-name") Please enter a 2-15 character name.
-            button(type="button" onclick="joinGame(); toLobbyView();") Join game
-            button(type="button" onclick="toHomeView();") Back to Home
+            h1 Join a Game
+            div
+                label(for="code") Game code:
+                input(name="code" placeholder="Enter your game code" id="join-code")
+            div
+                label(for="joinName") Name:
+                input(name="joinName" placeholder="Enter your name" id="join-name")
+                span(class="hidden" id="invalid-join-name") Please enter a 2-15 character name.
+            .submit-btn
+                button(type="button" onclick="joinGame(); toLobbyView();") Join game
+                button(type="button" onclick="toHomeView();") Back to Home
 
     #game-lobby-container.content-container.hidden
         h1.add-code
@@ -35,6 +47,7 @@ block content
         h1.add-code
         #your-hand
         ul(id="other-players")
+        #turn-container
 
 block scripts
     script(src="/javascripts/viewLogic.js")
