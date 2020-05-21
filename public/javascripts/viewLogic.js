@@ -39,5 +39,5 @@ const toHomeView = () => {
 const toLobbyView = () => {
     hideAll();
     let toShow = document.getElementById("game-lobby-container");
-    toShow.style.display = "block";
+    toShow.style.display = "flex";
 };

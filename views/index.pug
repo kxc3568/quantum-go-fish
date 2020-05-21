@@ -1,9 +1,8 @@
 extends layout
 
 block styles
+    link(rel="stylesheet", href="/stylesheets/game.css")
     link(rel="stylesheet", href="/stylesheets/main.css")
-    link(rel="stylesheet", href="/stylesheets/landing.css")
-    link(rel="stylesheet", href="/stylesheets/create-join.css")
 
 block content
     #landing-container.content-container.nav-container
@@ -38,16 +37,22 @@ block content
                 button(type="button" onclick="joinGame(); toLobbyView();") Join game
                 button(type="button" onclick="toHomeView();") Back to Home
 
-    #game-lobby-container.content-container.hidden
-        h1.add-code
-        ul(id="player-list")
-        button(type="button" onclick="startGame(); toGameView();") Start Game
-    
-    #game-container.content-container.hidden
-        h1.add-code
-        #your-hand
-        ul(id="other-players")
-        #turn-container
+    #game-lobby-container.content-container.gl-container.hidden
+        .lobby-container
+            h1.add-code
+            ul(id="player-list")
+            button(type="button" onclick="startGame(); toGameView();") Start Game
+        .game-container.hidden
+            #your-hand
+            #turn-container
+                #turn-text
+                #select-container
+                    label(for="player-select") Select a player: 
+                    select(name="player-select" id="player-select")
+                    label(for="suit-select") Select a suit:
+                    select(name="suit-select" id="suit-select")
+                    button(type="button" onclick="askQuestion();") Ask Question
+            ul(id="other-players")
 
 block scripts
     script(src="/javascripts/viewLogic.js")

@@ -22,11 +22,16 @@ const onStartGame = (app, data, clientSocket) => {
     app.io.in(data.code).emit("Update Turn", round.getPlayers()[round.advanceTurn()]);
 };
 
+const onQuestion = (app, data, clientSocket) => {
+    console.log(data);
+};
+
 const serverSocket = (app) => {
     app.io.on('connect', (clientSocket) => {
         clientSocket.on("Create Game", data => onCreateGame(app, data, clientSocket));
         clientSocket.on("Join Game", data => onJoinGame(app, data, clientSocket));
         clientSocket.on("Start Game", data => onStartGame(app, data, clientSocket));
+        clientSocket.on("Question", data => onQuestion(app, data, clientSocket));
     });
 };
 

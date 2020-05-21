@@ -46,6 +46,15 @@ const startGame = () => {
     socket.emit("Start Game", { code: code });
 };
 
+const askQuestion = () => {
+    const ps = document.getElementById("player-select");
+    const ss = document.getElementById("suit-select");
+    const nickname = ps.options[ps.selectedIndex].value;
+    const suit = ss.options[ss.selectedIndex].value;
+    const code = document.getElementsByClassName("add-code")[0].innerHTML;
+    socket.emit("Question", { room: code, nickname: nickname, suit: suit });
+};
+
 //
 // SOCKET FUNCTIONS
 //
@@ -65,7 +74,7 @@ const populateCode = (code) => {
  */
 const removeAllChildren = (el) => {
     while (el.lastElementChild) {
-        el.removeChild(playerList.lastElementChild);
+        el.removeChild(el.lastElementChild);
     }
 }
 
@@ -87,9 +96,8 @@ const updatePlayerList = (players) => {
  * Changes to the view of the started game
  */
 const toGameView = () => {
-    hideAll();
-    let toShow = document.getElementById("game-container");
-    toShow.style.display = "block";
+    let toShow = document.getElementsByClassName("game-container")[0];
+    toShow.style.display = "flex";
 };
 
 /**
@@ -130,16 +138,42 @@ const updateHands = (hands) => {
     });
 };
 
+const addOption = (select, optionName) => {
+    let opt = document.createElement("OPTION");
+    opt.setAttribute("value", optionName);
+    opt.innerHTML = optionName;
+    select.appendChild(opt);
+};
+
+const addOptions = (select, optionNames) => {
+    optionNames.forEach(name => addOption(select, name));
+};
+
+const populateSelectors = (nickname) => {
+    const playerSelect = document.getElementById("player-select");
+    const suitSelect = document.getElementById("suit-select");
+    const playerList = document.getElementById("player-list");
+    const playerNames = Array.from(playerList.children).map(el => el.innerHTML).filter(el => el !== nickname);
+    const suitNames = [...Array(playerList.children.length).keys()].map(el => el + 1);
+    addOptions(playerSelect, playerNames);
+    addOptions(suitSelect, suitNames);
+};
+
 const updateTurn = (player) => {
-    const turnContainer = document.getElementById("turn-container");
-    removeAllChildren(turnContainer);
+    const turnTextContainer = document.getElementById("turn-text");
+    const selectContainer = document.getElementById("select-container");
     let turnText;
     if (player.sid == socket.id) {
         turnText = "Your turn";
+        if (document.getElementById("player-select").children.length == 0) {
+            populateSelectors(player.nickname);
+        }
+        selectContainer.style.display = "block";
     } else {
         turnText = "Waiting for " + player.nickname + " to make a move...";
+        selectContainer.style.display = "none";
     }
-    turnContainer.appendChild(document.createTextNode(turnText));
+    turnTextContainer.appendChild(document.createTextNode(turnText));
 };
 
 /**
