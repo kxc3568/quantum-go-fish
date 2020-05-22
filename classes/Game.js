@@ -15,6 +15,11 @@ class Game {
         return this.players;
     }
 
+    containsPlayer(nickname) {
+        const playersWithNickname = this.players.filter(player => player.nickname === nickname);
+        return playersWithNickname.length === 1;
+    }
+
     /**
      * Creates a new player and adds it to the current game
      * @param {Socket} sid          The ID of the socket associated with the player

@@ -29,19 +29,22 @@ block content
             div
                 label(for="code") Game code:
                 input(name="code" placeholder="Enter your game code" id="join-code")
+                span(class="hidden" id="invalid-game-code") The game you're looking for doesn't exist.
             div
                 label(for="joinName") Name:
                 input(name="joinName" placeholder="Enter your name" id="join-name")
+                span(class="hidden" id="duplicate-join-name") Someone has already claimed your name!
                 span(class="hidden" id="invalid-join-name") Please enter a 2-15 character name.
             .submit-btn
-                button(type="button" onclick="joinGame(); toLobbyView();") Join game
+                button(type="button" onclick="joinGame();") Join game
                 button(type="button" onclick="toHomeView();") Back to Home
 
     #game-lobby-container.content-container.gl-container.hidden
         .lobby-container
             h1.add-code
             ul(id="player-list")
-            button(type="button" onclick="startGame(); toGameView();") Start Game
+            button(type="button" onclick="startGame();") Start Game
+            span(class="hidden" id="more-player-error") You need more players to start the game.
         .game-container.hidden
             #your-hand
             #turn-container

@@ -32,12 +32,3 @@ const toHomeView = () => {
     let toShow = document.getElementById("landing-container");
     toShow.style.display = "flex";
 }
-
-/**
- * Changes to the view of the game lobby
- */
-const toLobbyView = () => {
-    hideAll();
-    let toShow = document.getElementById("game-lobby-container");
-    toShow.style.display = "flex";
-};

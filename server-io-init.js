@@ -8,18 +8,29 @@ const onCreateGame = (app, data, clientSocket) => {
 const onJoinGame = (app, data, clientSocket) => {
     clientSocket.join(data.code);
     const game = app.gm.getGame(data.code);
-    game.addPlayer(data.sid, data.nickname);
-    const players = game.getPlayers();
-    app.io.to(clientSocket.id).emit("Room Code", data.code);
-    app.io.in(data.code).emit("Update Players", players);
+    if (game === undefined) {
+        app.io.to(clientSocket.id).emit("Joined Game", { success: false, message: "Code" });
+    } else if (game.containsPlayer(data.nickname)) {
+        app.io.to(clientSocket.id).emit("Joined Game", { success: false, message: "Name" });
+    } else {
+        game.addPlayer(data.sid, data.nickname);
+        const players = game.getPlayers();
+        app.io.to(clientSocket.id).emit("Joined Game", { success: true, message: "" });
+        app.io.to(clientSocket.id).emit("Room Code", data.code);
+        app.io.in(data.code).emit("Update Players", players);
+    }
 };
 
 const onStartGame = (app, data) => {
     const game = app.gm.startGame(data.code);
-    app.io.in(data.code).emit("Game Started");
-    const round = game.getRound();
-    app.io.in(data.code).emit("Update Hands", round.getHands());
-    app.io.in(data.code).emit("Update Turn", round.getPlayers()[round.advanceTurn()]);
+    if (game.getPlayers().length < 2) {
+        app.io.in(data.code).emit("Game Started", { success: false })
+    } else {
+        app.io.in(data.code).emit("Game Started", { success: true });
+        const round = game.getRound();
+        app.io.in(data.code).emit("Update Hands", round.getHands());
+        app.io.in(data.code).emit("Update Turn", round.getPlayers()[round.advanceTurn()]);
+    }
 };
 
 const onQuestion = (app, data) => {

@@ -1,4 +1,35 @@
 /**
+ * Changes to the view of the game lobby
+ */
+const toLobbyView = () => {
+    hideAll();
+    let toShow = document.getElementById("game-lobby-container");
+    toShow.style.display = "flex";
+};
+
+/**
+ * Changes to the view of the started game
+ */
+const processStartGame = (data) => {
+    if (data.success) {
+        let toShow = document.getElementsByClassName("game-container")[0];
+        toShow.style.display = "flex";
+    } else {
+        document.getElementById("more-player-error").style.display = "inline";
+    }
+};
+
+const processJoinResults = (data) => {
+    if (data.success) {
+        toLobbyView();
+    } else if (data.message === "Name") {
+        document.getElementById("duplicate-join-name").style.display = "inline";
+    } else {
+        document.getElementById("invalid-game-code").style.display = "inline";
+    }
+};
+
+/**
  * Determines if the nickname given is valid
  * @param {String} nickname     The proposed nickname
  */
@@ -115,14 +146,6 @@ const updatePlayerList = (players) => {
         playerItem.appendChild(document.createTextNode(player.nickname));
         playerList.appendChild(playerItem);
     });
-};
-
-/**
- * Changes to the view of the started game
- */
-const toGameView = () => {
-    let toShow = document.getElementsByClassName("game-container")[0];
-    toShow.style.display = "flex";
 };
 
 /**
@@ -280,8 +303,9 @@ const updateWinner = (winner) => {
  */
 const socketInit = () => {
     socket.on("Room Code", code => populateCode(code));
+    socket.on("Joined Game", data => processJoinResults(data));
     socket.on("Update Players", players => updatePlayerList(players));
-    socket.on("Game Started", toGameView);
+    socket.on("Game Started", data => processStartGame(data));
     socket.on("Update Hands", hands => updateHands(hands));
     socket.on("Update Turn", player => updateTurn(player));
     socket.on("Question", question => updateQuestion(question));
