@@ -13,6 +13,14 @@
     flex-direction: column;
 }
 
-#select-container {
+#question-container {
+    display: none;
+}
+
+#response-text {
+    display: none;
+}
+
+#response-select-container {
     display: none;
 }

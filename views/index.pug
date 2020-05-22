@@ -46,12 +46,18 @@ block content
             #your-hand
             #turn-container
                 #turn-text
-                #select-container
+                #question-container
                     label(for="player-select") Select a player: 
                     select(name="player-select" id="player-select")
                     label(for="suit-select") Select a suit:
                     select(name="suit-select" id="suit-select")
                     button(type="button" onclick="askQuestion();") Ask Question
+                #response-container
+                    #response-select-container
+                        label(for="response-select") Answer: 
+                        select(name="response-select" id="response-select")
+                        button(type="button" onclick="answerQuestion();") Answer Question
+                    #response-text
             ul(id="other-players")
 
 block scripts

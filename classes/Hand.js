@@ -1,8 +1,9 @@
 class Hand {
 
     constructor(suits) {
-        this.determined = new Map();
-        this.undetermined = { numCards: 4, possibleSuits: suits }
+        this.determined = {};
+        suits.forEach(suit => this.determined[suit] = 0);
+        this.undetermined = { numCards: 4, possibleSuits: suits };
     }
 
     /**
@@ -30,11 +31,7 @@ class Hand {
      * @param {String} suit     The suit of the added card
      */
     addCard(suit) {
-        if (this.determined.get(suit)) {
-            this.determined.get(suit) += 1;
-        } else {
-            this.determined.set(suit, 1);
-        }
+        this.determined[suit] += 1;
     }
 
     /**
@@ -42,11 +39,7 @@ class Hand {
      * @param {String} suit     The suit of the lost card
      */
     loseCard(suit) {
-        if (this.determined.get(suit) == 1) {
-            this.determined.delete(suit);
-        } else {
-            this.determined.set(suit, this.determined.get(suit) - 1);
-        }
+        this.determined[suit] -= 1;
     }
 }
 

@@ -14,7 +14,7 @@ const onJoinGame = (app, data, clientSocket) => {
     app.io.in(data.code).emit("Update Players", players);
 };
 
-const onStartGame = (app, data, clientSocket) => {
+const onStartGame = (app, data) => {
     const game = app.gm.startGame(data.code);
     app.io.in(data.code).emit("Game Started");
     const round = game.getRound();
@@ -22,16 +22,28 @@ const onStartGame = (app, data, clientSocket) => {
     app.io.in(data.code).emit("Update Turn", round.getPlayers()[round.advanceTurn()]);
 };
 
-const onQuestion = (app, data, clientSocket) => {
-    console.log(data);
+const onQuestion = (app, data) => {
+    app.io.in(data.room).emit("Question", data);
+    const round = app.gm.getGame(data.room).getRound();
+    round.ask(data.questionFrom, data.questionTo, data.suit);
+};
+
+const onResponse = (app, data) => {
+    const round = app.gm.getGame(data.room).getRound();
+    const questionFrom = round.getTurnPlayer();
+    const lastAction = round.getLastAction();
+    round.respond(questionFrom, data.responseFrom, data.response, lastAction.suit);
+    app.io.in(data.room).emit("Update Hands", round.getHands());
+    app.io.in(data.room).emit("Update Turn", round.getPlayers()[round.advanceTurn()]);
 };
 
 const serverSocket = (app) => {
     app.io.on('connect', (clientSocket) => {
         clientSocket.on("Create Game", data => onCreateGame(app, data, clientSocket));
         clientSocket.on("Join Game", data => onJoinGame(app, data, clientSocket));
-        clientSocket.on("Start Game", data => onStartGame(app, data, clientSocket));
-        clientSocket.on("Question", data => onQuestion(app, data, clientSocket));
+        clientSocket.on("Start Game", data => onStartGame(app, data));
+        clientSocket.on("Question", data => onQuestion(app, data));
+        clientSocket.on("Response", data => onResponse(app, data));
     });
 };
 

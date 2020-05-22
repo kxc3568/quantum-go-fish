@@ -16,6 +16,7 @@ const validName = (nickname) => {
 const createGame = () => {
     const nickname = document.getElementById("create-name").value;
     if (validName(nickname)) {
+        socket.nickname = nickname;
         socket.emit("Create Game", { sid: socket.id, nickname: nickname });
     } else {
         const nameError = document.getElementById("invalid-create-name");
@@ -31,6 +32,7 @@ const joinGame = () => {
     const code = document.getElementById("join-code").value;
     const nickname = document.getElementById("join-name").value;
     if (validName(nickname)) {
+        socket.nickname = nickname;
         socket.emit("Join Game", { sid: socket.id, nickname: nickname, code: code });
     } else {
         const nameError = document.getElementById("invalid-joinname");
@@ -52,7 +54,14 @@ const askQuestion = () => {
     const nickname = ps.options[ps.selectedIndex].value;
     const suit = ss.options[ss.selectedIndex].value;
     const code = document.getElementsByClassName("add-code")[0].innerHTML;
-    socket.emit("Question", { room: code, nickname: nickname, suit: suit });
+    socket.emit("Question", { room: code, questionFrom: socket.nickname, questionTo: nickname, suit: suit });
+};
+
+const answerQuestion = () => {
+    const rs = document.getElementById("response-select");
+    const response = rs.options[rs.selectedIndex].value;
+    const code = document.getElementsByClassName("add-code")[0].innerHTML;
+    socket.emit("Response", { room: code, response: response, responseFrom: socket.nickname });
 };
 
 //
@@ -76,7 +85,13 @@ const removeAllChildren = (el) => {
     while (el.lastElementChild) {
         el.removeChild(el.lastElementChild);
     }
-}
+};
+
+const createRemovableTextNode = (text) => {
+    const p = document.createElement("P");
+    p.appendChild(document.createTextNode(text));
+    return p;
+};
 
 /**
  * Updates the lobby player list with the given nickname
@@ -107,15 +122,16 @@ const toGameView = () => {
  */
 const appendHandToElement = (el, hand) => {
     let handText = hand.nickname;
-    Object.keys(hand.hand.determined).forEach(key => {
-        for (let i = 0; i < hand.hand.determined.get(key); i++) {
-            handText += " " + key;
+    Object.keys(hand.hand.determined).forEach((suit) => {
+        for (let i = 0; i < hand.hand.determined[suit]; i++) {
+            handText += " " + suit;
         }
     });
     for (let i = 0; i < hand.hand.undetermined.numCards; i++) {
         handText += " blank";
     }
-    el.appendChild(document.createTextNode(handText));
+    
+    el.appendChild(createRemovableTextNode(handText));
 };
 
 /**
@@ -149,32 +165,64 @@ const addOptions = (select, optionNames) => {
     optionNames.forEach(name => addOption(select, name));
 };
 
-const populateSelectors = (nickname) => {
+const populateSelectors = () => {
     const playerSelect = document.getElementById("player-select");
     const suitSelect = document.getElementById("suit-select");
     const playerList = document.getElementById("player-list");
-    const playerNames = Array.from(playerList.children).map(el => el.innerHTML).filter(el => el !== nickname);
+    const playerNames = Array.from(playerList.children).map(el => el.innerHTML).filter(el => el !== socket.nickname);
     const suitNames = [...Array(playerList.children.length).keys()].map(el => el + 1);
     addOptions(playerSelect, playerNames);
     addOptions(suitSelect, suitNames);
 };
 
+const clearResponses = () => {
+    document.getElementById("response-select-container").style.display = "none";
+    removeAllChildren(document.getElementById("response-text"));
+};
+
 const updateTurn = (player) => {
+    clearResponses();
     const turnTextContainer = document.getElementById("turn-text");
-    const selectContainer = document.getElementById("select-container");
+    const questionContainer = document.getElementById("question-container");
+    removeAllChildren(turnTextContainer);
     let turnText;
     if (player.sid == socket.id) {
         turnText = "Your turn";
         if (document.getElementById("player-select").children.length == 0) {
-            populateSelectors(player.nickname);
+            populateSelectors();
         }
-        selectContainer.style.display = "block";
+        questionContainer.style.display = "block";
     } else {
         turnText = "Waiting for " + player.nickname + " to make a move...";
-        selectContainer.style.display = "none";
+        questionContainer.style.display = "none";
     }
-    turnTextContainer.appendChild(document.createTextNode(turnText));
+    turnTextContainer.appendChild(createRemovableTextNode(turnText));
 };
+
+const clearQuestion = () => {
+    const questionContainer = document.getElementById("question-container");
+    questionContainer.style.display = "none";
+};
+
+const updateQuestion = (question) => {
+    clearQuestion();
+    const responseTextContainer = document.getElementById("response-text");
+    let text;
+    if (question.questionTo === socket.nickname) {
+        text = question.questionFrom + " asks if you have any " + question.suit + "s.";
+        responseTextContainer.appendChild(createRemovableTextNode(text));
+        const responseSelect = document.getElementById("response-select");
+        if (responseSelect.children.length == 0) {
+            addOption(responseSelect, "Yes");
+            addOption(responseSelect, "No");
+        }
+        document.getElementById("response-select-container").style.display = "block";
+    } else {
+        text = "Waiting for " + question.questionTo + " to determine if he/she has any " + question.suit + "s...";
+        responseTextContainer.appendChild(createRemovableTextNode(text));
+    }
+    responseTextContainer.style.display = "block";
+}
 
 /**
  * Initializes the global client socket message listeners
@@ -185,6 +233,7 @@ const socketInit = () => {
     socket.on("Game Started", toGameView);
     socket.on("Update Hands", hands => updateHands(hands));
     socket.on("Update Turn", player => updateTurn(player));
+    socket.on("Question", question => updateQuestion(question));
 };
 
 const socket = io.connect();
