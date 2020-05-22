@@ -48,6 +48,9 @@ const startGame = () => {
     socket.emit("Start Game", { code: code });
 };
 
+/**
+ * Pings the server to send a question in the socket's room
+ */
 const askQuestion = () => {
     const ps = document.getElementById("player-select");
     const ss = document.getElementById("suit-select");
@@ -57,6 +60,9 @@ const askQuestion = () => {
     socket.emit("Question", { room: code, questionFrom: socket.nickname, questionTo: nickname, suit: suit });
 };
 
+/**
+ * Pings the server to respond to a question in the socket's room
+ */
 const answerQuestion = () => {
     const rs = document.getElementById("response-select");
     const response = rs.options[rs.selectedIndex].value;
@@ -87,6 +93,10 @@ const removeAllChildren = (el) => {
     }
 };
 
+/**
+ * Creates a paragraph node with the given text
+ * @param {String} text 
+ */
 const createRemovableTextNode = (text) => {
     const p = document.createElement("P");
     p.appendChild(document.createTextNode(text));
@@ -116,7 +126,7 @@ const toGameView = () => {
 };
 
 /**
- * 
+ * Adds the list of cards in hand to the HTML element
  * @param {HTMLElement} el  The HTML Element to append hand markup to
  * @param {Object} hand     Contains an individual socket's nickname and hand
  */
@@ -154,6 +164,11 @@ const updateHands = (hands) => {
     });
 };
 
+/**
+ * Adds an option to a select element
+ * @param {HTMLElement} select      The HTML select element to add the option to
+ * @param {String} optionName       The name of the option element to add
+ */
 const addOption = (select, optionName) => {
     let opt = document.createElement("OPTION");
     opt.setAttribute("value", optionName);
@@ -161,10 +176,18 @@ const addOption = (select, optionName) => {
     select.appendChild(opt);
 };
 
+/**
+ * Adds the option names to the selector
+ * @param {HTMLElement} select      The HTML select element to add options to
+ * @param {String[]} optionNames    The names of the option elements to add
+ */
 const addOptions = (select, optionNames) => {
     optionNames.forEach(name => addOption(select, name));
 };
 
+/**
+ * Adds options to the player and suit selectors
+ */
 const populateSelectors = () => {
     const playerSelect = document.getElementById("player-select");
     const suitSelect = document.getElementById("suit-select");
@@ -175,11 +198,18 @@ const populateSelectors = () => {
     addOptions(suitSelect, suitNames);
 };
 
+/**
+ * Clears the response containers
+ */
 const clearResponses = () => {
     document.getElementById("response-select-container").style.display = "none";
     removeAllChildren(document.getElementById("response-text"));
 };
 
+/**
+ * Updates the turn and question containers based on who's turn it is
+ * @param {Player} player 
+ */
 const updateTurn = (player) => {
     clearResponses();
     const turnTextContainer = document.getElementById("turn-text");
@@ -199,11 +229,18 @@ const updateTurn = (player) => {
     turnTextContainer.appendChild(createRemovableTextNode(turnText));
 };
 
+/**
+ * Hides the question on the page
+ */
 const clearQuestion = () => {
     const questionContainer = document.getElementById("question-container");
     questionContainer.style.display = "none";
 };
 
+/**
+ * Updates the response container with response decisions for all players
+ * @param {Object} question     Data about the question and players involved
+ */
 const updateQuestion = (question) => {
     clearQuestion();
     const responseTextContainer = document.getElementById("response-text");
