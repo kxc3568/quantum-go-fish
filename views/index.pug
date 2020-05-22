@@ -53,11 +53,11 @@ block content
                     select(name="suit-select" id="suit-select")
                     button(type="button" onclick="askQuestion();") Ask Question
                 #response-container
+                    #response-text
                     #response-select-container
                         label(for="response-select") Answer: 
                         select(name="response-select" id="response-select")
                         button(type="button" onclick="answerQuestion();") Answer Question
-                    #response-text
             ul(id="other-players")
 
 block scripts

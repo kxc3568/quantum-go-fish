@@ -38,7 +38,7 @@ class Game {
      * Starts a new game round for all players
      */
     start() {
-        this.currentRound = new Round(this.players, { suits: ['1', '2', '3'] });
+        this.currentRound = new Round(this.players, {});
     }
 
     /**

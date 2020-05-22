@@ -131,16 +131,22 @@ const toGameView = () => {
  * @param {Object} hand     Contains an individual socket's nickname and hand
  */
 const appendHandToElement = (el, hand) => {
+    const h = hand.hand;
     let handText = hand.nickname;
-    Object.keys(hand.hand.determined).forEach((suit) => {
-        for (let i = 0; i < hand.hand.determined[suit]; i++) {
+    Object.keys(h.determined).forEach((suit) => {
+        for (let i = 0; i < h.determined[suit]; i++) {
             handText += " " + suit;
         }
     });
-    for (let i = 0; i < hand.hand.undetermined.numCards; i++) {
-        handText += " blank";
-    }
-    
+    h.undetermined.forEach(possibleSuits => {
+        for (let i = 0; i < possibleSuits[1]; i++) {
+            handText += " (" + possibleSuits[0][0];
+            for (let j = 1; j < possibleSuits[0].length; j++) {
+                handText += " or " + possibleSuits[0][j];
+            }
+            handText += ")"
+        }
+    });
     el.appendChild(createRemovableTextNode(handText));
 };
 
@@ -262,6 +268,14 @@ const updateQuestion = (question) => {
 }
 
 /**
+ * Updates page with the winner of the game
+ * @param {String} winner   The nickname of the winner of the game
+ */
+const updateWinner = (winner) => {
+
+};
+
+/**
  * Initializes the global client socket message listeners
  */
 const socketInit = () => {
@@ -271,6 +285,7 @@ const socketInit = () => {
     socket.on("Update Hands", hands => updateHands(hands));
     socket.on("Update Turn", player => updateTurn(player));
     socket.on("Question", question => updateQuestion(question));
+    socket.on("Winner", winner => updateWinner(winner));
 };
 
 const socket = io.connect();

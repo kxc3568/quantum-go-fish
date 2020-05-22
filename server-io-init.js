@@ -25,16 +25,24 @@ const onStartGame = (app, data) => {
 const onQuestion = (app, data) => {
     app.io.in(data.room).emit("Question", data);
     const round = app.gm.getGame(data.room).getRound();
-    round.ask(data.questionFrom, data.questionTo, data.suit);
+    const winner = round.ask(data.questionFrom, data.questionTo, data.suit);
+    app.io.in(data.room).emit("Update Hands", round.getHands());
+    if (winner !== "") {
+        app.io.in(data.room).emit("Winner", winner);
+    }
 };
 
 const onResponse = (app, data) => {
     const round = app.gm.getGame(data.room).getRound();
     const questionFrom = round.getTurnPlayer();
     const lastAction = round.getLastAction();
-    round.respond(questionFrom, data.responseFrom, data.response, lastAction.suit);
+    const winner = round.respond(questionFrom, data.responseFrom, data.response, lastAction.suit);
     app.io.in(data.room).emit("Update Hands", round.getHands());
-    app.io.in(data.room).emit("Update Turn", round.getPlayers()[round.advanceTurn()]);
+    if (winner !== "") {
+        app.io.in(data.room).emit("Winner", winner);
+    } else {
+        app.io.in(data.room).emit("Update Turn", round.getPlayers()[round.advanceTurn()]);
+    }
 };
 
 const serverSocket = (app) => {
