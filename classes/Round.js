@@ -104,18 +104,16 @@ class Round {
     makeDeductions() {
         Object.keys(this.determined).forEach(suit => {
             const numberRemaining = 4 - this.determined[suit];
-            if (numberRemaining > 0) {
-                this.players.forEach(player => {
-                    const hand = player.getHand();
-                    hand.undetermined.forEach(posSuits => {
-                        if (posSuits[0].indexOf(suit) > -1 && posSuits[1] > numberRemaining) {
-                            const numberOther = posSuits[1] - numberRemaining;
-                            posSuits[1] -= numberOther;
-                            this.simplify(hand, posSuits[0], suit, numberOther);
-                        }
-                    });
+            this.players.forEach(player => {
+                const hand = player.getHand();
+                hand.undetermined.forEach(posSuits => {
+                    if (posSuits[0].indexOf(suit) > -1 && posSuits[1] > numberRemaining) {
+                        const numberOther = posSuits[1] - numberRemaining;
+                        posSuits[1] -= numberOther;
+                        this.simplify(hand, posSuits[0], suit, numberOther);
+                    }
                 });
-            }
+            });
         });
     }
 
@@ -159,18 +157,12 @@ class Round {
 
     /**
      * Updates the round-scoped determined variable based on a player's hand before and after narrow()
-     * @param {Hand} beforeHand     The hand of the player before narrowing
-     * @param {Hand} afterHand      The hand of the player after narrowing
+     * @param {Object} newDetermines    Object holding newly determined suits with 'suit' : number of new determines
      */
-    updateDetermined(beforeHand, afterHand) {
-        console.log(beforeHand);
-        console.log(afterHand);
-        Object.keys(beforeHand.determined).forEach(key => {
-            console.log("hello outside if")
-            if (beforeHand[key] !== afterHand[key]) {
-                this.determined[key] += afterHand[key] - beforeHand[key];
-                console.log("hello inside if")
-            }
+    updateDetermined(newDetermines) {
+        Object.keys(newDetermines).forEach(key => {
+            
+            this.determined[key] += newDetermines[key];
         });
     }
 
@@ -192,11 +184,8 @@ class Round {
             }
             playerTo.transferCard(playerFrom, suit);
         } else {
-            const beforeHand = playerTo.getHand();
-            playerTo.narrow(suit);
-            const afterHand = playerTo.getHand();
-            console.log("narrow", playerTo.nickname);
-            this.updateDetermined(beforeHand, afterHand);
+            const newDetermines = playerTo.narrow(suit);
+            this.updateDetermined(newDetermines);
         }
         this.makeDeductions();
         if (this.checkWinConditions()) {

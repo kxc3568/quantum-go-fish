@@ -3,7 +3,7 @@ class Hand {
     constructor(suits) {
         this.determined = {};
         suits.forEach(suit => this.determined[suit] = 0);
-        this.undetermined = [[suits, 4]];
+        this.undetermined = [[suits.slice(), 4]];
     }
 
     /**
@@ -28,6 +28,7 @@ class Hand {
      * @param {String} suit     The suit that the cards are determined not to be
      */
     narrow(suit) {
+        const newDetermines = {}
         const keep = Array(this.undetermined.length);
         this.undetermined.forEach((posSuit, undeterminedIndex) => {
             const index = posSuit[0].indexOf(suit);
@@ -36,14 +37,17 @@ class Hand {
             }
             if (posSuit[0].length === 1) {
                 keep[undeterminedIndex] = false;
+                newDetermines[posSuit[0]] = 0;
                 for (let i = 0; i < posSuit[1]; i++) {
                     this.addCard(posSuit[0]);
+                    newDetermines[posSuit[0]] += 1;
                 }
             } else {
                 keep[undeterminedIndex] = true;
             }
         });
         this.undetermined = this.undetermined.filter((el, index) => keep[index] === true);
+        return newDetermines;
     }
 
     /**

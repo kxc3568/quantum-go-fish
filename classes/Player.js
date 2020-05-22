@@ -37,7 +37,7 @@ class Player {
      * @param {String} suit     The suit that the cards are determined not to be
      */
     narrow(suit) {
-        this.hand.narrow(suit);
+        return this.hand.narrow(suit);
     }
 
     /**
