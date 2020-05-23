@@ -3,22 +3,27 @@
  */
 const toLobbyView = () => {
     hideAll();
-    let toShow = document.getElementById("game-lobby-container");
+    let toShow = document.getElementById("game-container");
     toShow.style.display = "flex";
 };
 
 /**
- * Changes to the view of the started game
+ * Starts the game or displays an error depending on data received from the server
+ * @param {Object} data     Contains details about the response of the start game attempt
  */
 const processStartGame = (data) => {
     if (data.success) {
-        let toShow = document.getElementsByClassName("game-container")[0];
+        let toShow = document.getElementsByClassName("hands-container")[0];
         toShow.style.display = "flex";
     } else {
         document.getElementById("more-player-error").style.display = "inline";
     }
 };
 
+/**
+ * Shows the lobby or an error depending on data received from the server
+ * @param {Object} data     Contains details about the response of the join attempt
+ */
 const processJoinResults = (data) => {
     if (data.success) {
         toLobbyView();
@@ -49,6 +54,7 @@ const createGame = () => {
     if (validName(nickname)) {
         socket.nickname = nickname;
         socket.emit("Create Game", { sid: socket.id, nickname: nickname });
+        toLobbyView();
     } else {
         const nameError = document.getElementById("invalid-create-name");
         nameError.style.display = "inline";
@@ -66,7 +72,7 @@ const joinGame = () => {
         socket.nickname = nickname;
         socket.emit("Join Game", { sid: socket.id, nickname: nickname, code: code });
     } else {
-        const nameError = document.getElementById("invalid-joinname");
+        const nameError = document.getElementById("invalid-join-name");
         nameError.style.display = "inline";
     }
 };
@@ -178,7 +184,7 @@ const appendHandToElement = (el, hand) => {
  * @param {Object} hands    The hands of all players accessed by Socket ID
  */
 const updateHands = (hands) => {
-    const handList = document.getElementById("other-players");
+    const handList = document.getElementById("other-players-hands");
     removeAllChildren(handList);
     Object.keys(hands).forEach((sid) => {
         if (sid == socket.id) {

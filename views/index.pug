@@ -15,22 +15,22 @@ block content
     #create-game-container.content-container.nav-container.hidden
         .create-game-form
             h1 Create a Game
-            div
+            .nav-inputs
                 label(for="createName") Name:
                 input(name="createName" placeholder="Enter your name" id="create-name")
                 span(class="hidden" id="invalid-create-name") Please enter a 2-15 character name.
             .submit-btn
-                button(type="button" onclick="createGame(); toLobbyView();") Create game
+                button(type="button" onclick="createGame();") Create game
                 button(type="button" onclick="toHomeView();") Back to Home
 
     #join-game-container.content-container.nav-container.hidden
         .join-game-form
             h1 Join a Game
-            div
+            .nav-inputs
                 label(for="code") Game code:
                 input(name="code" placeholder="Enter your game code" id="join-code")
                 span(class="hidden" id="invalid-game-code") The game you're looking for doesn't exist.
-            div
+            .nav-inputs
                 label(for="joinName") Name:
                 input(name="joinName" placeholder="Enter your name" id="join-name")
                 span(class="hidden" id="duplicate-join-name") Someone has already claimed your name!
@@ -39,13 +39,15 @@ block content
                 button(type="button" onclick="joinGame();") Join game
                 button(type="button" onclick="toHomeView();") Back to Home
 
-    #game-lobby-container.content-container.gl-container.hidden
-        .lobby-container
-            h1.add-code
-            ul(id="player-list")
-            button(type="button" onclick="startGame();") Start Game
-            span(class="hidden" id="more-player-error") You need more players to start the game.
-        .game-container.hidden
+    #game-container.content-container.g-container.hidden
+        .flex-left.lobby-history-container
+            .lobby-container
+                h1.add-code
+                ul(id="player-list")
+                button(type="button" onclick="startGame();") Start Game
+                span(class="hidden" id="more-player-error") You need more players to start the game.
+            .history-container.hidden
+        .flex-right.hands-container.hidden
             #your-hand
             #turn-container
                 #turn-text
@@ -61,7 +63,7 @@ block content
                         label(for="response-select") Answer: 
                         select(name="response-select" id="response-select")
                         button(type="button" onclick="answerQuestion();") Answer Question
-            ul(id="other-players")
+            ul(id="other-players-hands")
 
 block scripts
     script(src="/javascripts/viewLogic.js")
