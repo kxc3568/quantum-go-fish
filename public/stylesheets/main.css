@@ -1,18 +1,133 @@
-html, body {
-    width: 99%;
-    height: 99%;
+.mobile-header {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    background-color: var(--color-main);
+    border-bottom: 1px solid black;
+    width: 100%;
+}
+
+.mobile-header h3 {
+    grid-column: 2/4;
+    transform: translate(-20px)
+}
+
+.mobile-header ul {
+    grid-column: 1/4;
+    background-color: var(--color-main);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    overflow: hidden;
+}
+
+.mobile-header li a {
+    display: block;
+    color: black;
+    padding: 20px 20px;
+    border-right: 1px solid black;
+    text-decoration: none;
+}
+
+.mobile-header li a:hover {
+    background-color: #31a8c4;
+}
+
+.mobile-header .menu {
+    clear: both;
+    max-height: 0;
+    transition: max-height .2s ease-out;
+}
+
+.mobile-header .menu-icon {
+    grid-column: 1/2;
+    display: inline-block;
+    padding: 28px 20px;
+    user-select: none;
+}
+
+.mobile-header .menu-icon .navicon {
+    background: black;
+    display: block;
+    height: 2px;
+    position: relative;
+    transition: background .2s ease-out;
+    width: 18px;
+}
+
+.mobile-header .menu-icon .navicon:before,
+.mobile-header .menu-icon .navicon:after {
+    background: black;
+    content: '';
+    display: block;
+    height: 100%;
+    position: absolute;
+    transition: all .2s ease-out;
+    width: 100%;
+}
+
+.mobile-header .menu-icon .navicon:before {
+    top: 5px;
+}
+
+.mobile-header .menu-icon .navicon:after {
+    top: -5px;
+}
+
+.mobile-header .menu-btn {
+    display: none;
+}
+
+.mobile-header .menu-btn:checked ~ .menu {
+    max-height: 120px;
+}
+
+.mobile-header .menu-btn:checked ~ .menu-icon .navicon {
+    background: transparent;
+}
+
+.mobile-header .menu-btn:checked ~ .menu-icon .navicon:before {
+    transform: rotate(-45deg);
+}
+
+.mobile-header .menu-btn:checked ~ .menu-icon .navicon:after {
+    transform: rotate(45deg);
+}
+
+.mobile-header .menu-btn:checked ~ .menu-icon:not(.steps) .navicon:before,
+.mobile-header .menu-btn:checked ~ .menu-icon:not(.steps) .navicon:after {
+    top: 0;
 }
 
 .hidden.hidden {
     display: none;
 }
 
+.desktop-landing {
+    display: none;
+}
+
+#logo {
+    width: 70vw;
+}
+
 button {
-    background-color: white;
-    padding: 0.5rem;
-    border-radius: 0.5rem;
-    margin: 0.5rem;
     display: block;
+    background-color: var(--color-main);
+    border-color: black;
+    border-style: solid;
+    font-size: 1rem;
+    padding: 0.75rem;
+    margin: 2rem;
+    min-width: 70vw;
+}
+
+label {
+    display: block;
+}
+
+input {
+    border: 1px solid black;
+    height: 2rem;
 }
 
 button:hover {
@@ -26,12 +141,15 @@ input {
 .nav-container {
     display: flex;
     flex-direction: column;
-    height: 85vh;
+    height: 95vh;
+    width: 80vw;
+    margin: 0 auto;
     align-items: center;
-    justify-content: center;
+    /* justify-content: center; */
+    font-size: 1.5rem;
 }
 
-@media (min-width: 900px) {
+@media (min-width: 1024px) {
     .submit-btn button {
         display: inline;
     }

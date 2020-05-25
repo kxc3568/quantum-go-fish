@@ -1,14 +1,22 @@
-.gl-container {
+.g-container {
     display: flex;
     flex-direction: row;
 }
 
-.lobby-container {
+.flex-left {
     width: 30vw;
 }
 
-.game-container {
+.flex-right {
     width: 70vw;
+}
+
+.lobby-history-container {
+    display: flex;
+    flex-direction: column;
+}
+
+.hands-container {
     display: flex;
     flex-direction: column;
 }
