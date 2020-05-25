@@ -27,8 +27,7 @@ block content
                 include logo.pug
             .nav-inputs.horiz-center
                 label(for="createName") Name:
-                input(type="text" name="createName" placeholder="Enter your name" id="create-name")
-                span(class="hidden" id="invalid-create-name") Please enter a 2-15 character name.
+                input(type="text" name="createName" placeholder="Enter your name" id="create-name" oninput="updateCreateButton();" maxlength="15")
             .setting-inputs
                 input(type="checkbox", name="setting-determined" id="setting-determined" checked)
                 label(for="setting-determined") Show determined suits
@@ -36,7 +35,7 @@ block content
                 input(type="checkbox", name="setting-history" id="setting-history" checked)
                 label(for="setting-history") Show move and deduction history
             .submit-btn
-                button(type="button" onclick="createGame();") Create game
+                button(type="button" onclick="createGame();" id="create-game-btn" disabled) Create game
                 button(type="button" onclick="toHomeView();") Back to Home
 
     #join-game-container.content-container.nav-container.hidden
@@ -45,15 +44,14 @@ block content
                 include logo.pug
             .nav-inputs.horiz-center
                 label(for="code") Room Code:
-                input(type="text" name="code" placeholder="Enter your game code" id="join-code")
+                input(type="text" name="code" placeholder="Enter your game code" id="join-code" oninput="updateJoinButton();" maxlength="4")
                 span(class="hidden" id="invalid-game-code") The game you're looking for doesn't exist.
             .nav-inputs.horiz-center
                 label(for="joinName") Name:
-                input(type="text" name="joinName" placeholder="Enter your name" id="join-name")
+                input(type="text" name="joinName" placeholder="Enter your name" id="join-name" oninput="updateJoinButton();" maxlength="15")
                 span(class="hidden" id="duplicate-join-name") Someone has already claimed your name!
-                span(class="hidden" id="invalid-join-name") Please enter a 2-15 character name.
             .submit-btn
-                button(type="button" onclick="joinGame();") Join game
+                button(type="button" onclick="joinGame();" id="join-game-btn" disabled) Join game
                 button(type="button" onclick="toHomeView();") Back to Home
 
     #game-container.content-container.g-container.hidden

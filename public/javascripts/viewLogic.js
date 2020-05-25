@@ -32,3 +32,24 @@ const toHomeView = () => {
     let toShow = document.getElementById("landing-container");
     toShow.style.display = "flex";
 }
+
+const updateCreateButton = () => {
+    const createName = document.getElementById("create-name").value;
+    const createGameBtn = document.getElementById("create-game-btn");
+    if (createName.length >= 2 && createName.length <= 15) {
+        createGameBtn.removeAttribute("disabled");
+    } else {
+        createGameBtn.setAttribute("disabled", "true");
+    }
+};
+
+const updateJoinButton = () => {
+    const joinName = document.getElementById("join-name").value;
+    const joinCode = document.getElementById("join-code").value;
+    const joinGameBtn = document.getElementById("join-game-btn");
+    if (joinName.length >= 2 && joinName.length <= 15 && joinCode.length === 4) {
+        joinGameBtn.removeAttribute("disabled");
+    } else {
+        joinGameBtn.setAttribute("disabled", "true");
+    }
+};
