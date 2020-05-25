@@ -106,11 +106,18 @@
     display: none;
 }
 
-#logo {
+.logo {
     width: 70vw;
+    margin: 5rem 0;
 }
 
-input {
+.horiz-center {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+input[type="text"] {
     border: 1px solid black;
     height: 2rem;
     margin-bottom: 1.25rem;
@@ -133,15 +140,17 @@ button:hover {
 .nav-container {
     display: flex;
     flex-direction: column;
-    height: 95vh;
     width: 80vw;
     margin: 0 auto;
     align-items: center;
-    font-size: 1.5rem;
 }
 
 .submit-btn button {
     min-width: 260px;
+}
+
+.nav-inputs {
+    vertical-align: baseline;
 }
 
 .nav-inputs label {
@@ -149,12 +158,20 @@ button:hover {
     margin-top: 1.25rem;
 }
 
+.setting-inputs {
+    margin: 2rem;
+}
+
+.setting-inputs label {
+    font-size: 1rem;
+}
+
 @media (min-width: 1024px) {
     .mobile-header {
         display: none;
     }
 
-    #logo {
+    .logo {
         width: 30vw;
     }
 
