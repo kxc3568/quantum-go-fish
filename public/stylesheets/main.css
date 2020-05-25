@@ -110,6 +110,12 @@
     width: 70vw;
 }
 
+input {
+    border: 1px solid black;
+    height: 2rem;
+    margin-bottom: 1.25rem;
+}
+
 button {
     display: block;
     background-color: var(--color-main);
@@ -118,24 +124,10 @@ button {
     font-size: 1rem;
     padding: 0.75rem;
     margin: 2rem;
-    min-width: 70vw;
-}
-
-label {
-    display: block;
-}
-
-input {
-    border: 1px solid black;
-    height: 2rem;
 }
 
 button:hover {
     border-style: dashed;
-}
-
-input {
-    margin-bottom: 1rem;
 }
 
 .nav-container {
@@ -145,12 +137,46 @@ input {
     width: 80vw;
     margin: 0 auto;
     align-items: center;
-    /* justify-content: center; */
     font-size: 1.5rem;
 }
 
+.submit-btn button {
+    min-width: 260px;
+}
+
+.nav-inputs label {
+    display: block;
+    margin-top: 1.25rem;
+}
+
 @media (min-width: 1024px) {
+    .mobile-header {
+        display: none;
+    }
+
+    #logo {
+        width: 30vw;
+    }
+
+    .desktop-landing {
+        display: block;
+    }
+
+    .nav-container {
+        justify-content: center;
+    }
+
     .submit-btn button {
         display: inline;
+    }
+
+    .nav-inputs {
+        max-width: 300px;
+    }
+
+    .create-game-form, .join-game-form {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
     }
 }
