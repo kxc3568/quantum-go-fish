@@ -21,7 +21,7 @@ block content
             button(type="button" onclick="createGameView();") Create a game
             button(type="button" onclick="joinGameView();") Join a game
 
-    #create-game-container.content-container.nav-container.hidden
+    #create-game-container.content-container.nav-container
         .create-game-form
             .horiz-center
                 include logo.pug
@@ -38,47 +38,64 @@ block content
                 button(type="button" onclick="createGame();" id="create-game-btn" disabled) Create game
                 button(type="button" onclick="toHomeView();") Back to Home
 
-    #join-game-container.content-container.nav-container.hidden
+    #join-game-container.content-container.nav-container
         .join-game-form
             .horiz-center
                 include logo.pug
             .nav-inputs.horiz-center
                 label(for="code") Room Code:
                 input(type="text" name="code" placeholder="Enter your game code" id="join-code" oninput="updateJoinButton();" maxlength="4")
-                span(class="hidden" id="invalid-game-code") The game you're looking for doesn't exist.
+                span(id="invalid-game-code") The game you're looking for doesn't exist.
             .nav-inputs.horiz-center
                 label(for="joinName") Name:
                 input(type="text" name="joinName" placeholder="Enter your name" id="join-name" oninput="updateJoinButton();" maxlength="15")
-                span(class="hidden" id="duplicate-join-name") Someone has already claimed your name!
+                span(id="duplicate-join-name") Someone has already claimed your name!
             .submit-btn
                 button(type="button" onclick="joinGame();" id="join-game-btn" disabled) Join game
                 button(type="button" onclick="toHomeView();") Back to Home
 
-    #game-container.content-container.g-container.hidden
-        .flex-left.lobby-history-container
+    #game-container.content-container.game-container
+        section.score-container
+        section.history-container
+        section.round-container
             .lobby-container
                 h1.add-code
                 ul(id="player-list")
                 button(type="button" onclick="startGame();") Start Game
-                span(class="hidden" id="more-player-error") You need more players to start the game.
-            .history-container.hidden
-        .flex-right.hands-container.hidden
-            #your-hand
+                span(id="more-player-error") You need more players to start the game.
+        section.hands-container.center-within
+            #current-player
+                //- player structure -> name label; ul with li's as cards
+                //- make method to create a player's hand
+                //- .player-name
+                //-     h3 kevin
+                //- .player-hand
+                //-     .card.determined
+                //-         .card-center
+                //-             p 1
+                //-     .card.undetermined
+                //-         .card-center
+                //-             p 2, 3, 4
             #turn-container
                 #turn-text
                 #question-container
-                    label(for="player-select") Select a player: 
-                    select(name="player-select" id="player-select")
-                    label(for="suit-select") Select a suit:
-                    select(name="suit-select" id="suit-select")
-                    button(type="button" onclick="askQuestion();") Ask Question
+                    .select
+                        label(for="player-select") Select a player: 
+                        select(name="player-select" id="player-select")
+                    .select
+                        label(for="suit-select") Select a suit:
+                        select(name="suit-select" id="suit-select")
+                    .center-inside
+                        button(type="button" onclick="askQuestion();") Ask Question
                 #response-container
                     #response-text
                     #response-select-container
-                        label(for="response-select") Answer: 
-                        select(name="response-select" id="response-select")
-                        button(type="button" onclick="answerQuestion();") Answer Question
-            ul(id="other-players-hands")
+                        .select
+                            label(for="response-select") Answer: 
+                            select(name="response-select" id="response-select")
+                        .center-inside
+                            button(type="button" onclick="answerQuestion();") Answer Question
+            ul(id="other-players")
 
 block scripts
     script(src="/javascripts/viewLogic.js")

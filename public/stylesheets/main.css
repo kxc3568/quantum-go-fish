@@ -98,11 +98,7 @@
     top: 0;
 }
 
-.hidden.hidden {
-    display: none;
-}
-
-.desktop-landing {
+#create-game-container, #join-game-container, #game-container, .nav-inputs span, .desktop-landing {
     display: none;
 }
 

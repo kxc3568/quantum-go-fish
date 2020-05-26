@@ -15,6 +15,7 @@ const processStartGame = (data) => {
     if (data.success) {
         let toShow = document.getElementsByClassName("hands-container")[0];
         toShow.style.display = "flex";
+        document.getElementsByClassName("round-container")[0].style.display = "none";
     } else {
         document.getElementById("more-player-error").style.display = "inline";
     }
@@ -155,28 +156,48 @@ const updatePlayerList = (players) => {
 };
 
 /**
+ * 
+ * @param {String} suit 
+ * @param {String} status 
+ */
+const createCard = (suit, status) => {
+    const card = document.createElement("div");
+    card.classList.add("card", status);
+    const centerCard = document.createElement("div");
+    centerCard.classList.add("card-center");
+    const text = document.createElement("p");
+    text.innerHTML = suit;
+    centerCard.appendChild(text);
+    card.appendChild(centerCard);
+    return card;
+};
+/**
  * Adds the list of cards in hand to the HTML element
  * @param {HTMLElement} el  The HTML Element to append hand markup to
  * @param {Object} hand     Contains an individual socket's nickname and hand
  */
 const appendHandToElement = (el, hand) => {
     const h = hand.hand;
-    let handText = hand.nickname;
+    const playerName = document.createElement("div");
+    playerName.classList.add("player-name");
+    const h3Name = document.createElement("h3");
+    h3Name.innerHTML = hand.nickname;
+    playerName.appendChild(h3Name);
+
+    const playerHand = document.createElement("div");
     Object.keys(h.determined).forEach((suit) => {
         for (let i = 0; i < h.determined[suit]; i++) {
-            handText += " " + suit;
+            playerHand.appendChild(createCard(suit, "determined"));
         }
     });
     h.undetermined.forEach(possibleSuits => {
+        const undeterminedText = possibleSuits[0].join(", ");
         for (let i = 0; i < possibleSuits[1]; i++) {
-            handText += " (" + possibleSuits[0][0];
-            for (let j = 1; j < possibleSuits[0].length; j++) {
-                handText += " or " + possibleSuits[0][j];
-            }
-            handText += ")"
+            playerHand.appendChild(createCard(undeterminedText, "undetermined"));
         }
     });
-    el.appendChild(createRemovableTextNode(handText));
+    el.appendChild(playerName);
+    el.appendChild(playerHand);
 };
 
 /**
@@ -184,11 +205,11 @@ const appendHandToElement = (el, hand) => {
  * @param {Object} hands    The hands of all players accessed by Socket ID
  */
 const updateHands = (hands) => {
-    const handList = document.getElementById("other-players-hands");
+    const handList = document.getElementById("other-players");
     removeAllChildren(handList);
     Object.keys(hands).forEach((sid) => {
         if (sid == socket.id) {
-            const yourHand = document.getElementById("your-hand");
+            const yourHand = document.getElementById("current-player");
             removeAllChildren(yourHand);
             appendHandToElement(yourHand, hands[sid]);
         } else {
@@ -256,7 +277,7 @@ const updateTurn = (player) => {
         if (document.getElementById("player-select").children.length == 0) {
             populateSelectors();
         }
-        questionContainer.style.display = "block";
+        questionContainer.style.display = "flex";
     } else {
         turnText = "Waiting for " + player.nickname + " to make a move...";
         questionContainer.style.display = "none";
