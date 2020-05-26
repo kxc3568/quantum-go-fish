@@ -65,17 +65,6 @@ block content
                 span(id="more-player-error") You need more players to start the game.
         section.hands-container.center-within
             #current-player
-                //- player structure -> name label; ul with li's as cards
-                //- make method to create a player's hand
-                //- .player-name
-                //-     h3 kevin
-                //- .player-hand
-                //-     .card.determined
-                //-         .card-center
-                //-             p 1
-                //-     .card.undetermined
-                //-         .card-center
-                //-             p 2, 3, 4
             #turn-container
                 #turn-text
                 #question-container
@@ -95,7 +84,6 @@ block content
                             select(name="response-select" id="response-select")
                         .center-inside
                             button(type="button" onclick="answerQuestion();") Answer Question
-            ul(id="other-players")
 
 block scripts
     script(src="/javascripts/viewLogic.js")

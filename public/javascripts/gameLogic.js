@@ -13,9 +13,9 @@ const toLobbyView = () => {
  */
 const processStartGame = (data) => {
     if (data.success) {
-        let toShow = document.getElementsByClassName("hands-container")[0];
-        toShow.style.display = "flex";
+        document.getElementsByClassName("hands-container")[0].style.display = "";
         document.getElementsByClassName("round-container")[0].style.display = "none";
+        document.getElementsByClassName("history-container")[0].style.display = "flex"
     } else {
         document.getElementById("more-player-error").style.display = "inline";
     }
@@ -124,9 +124,10 @@ const populateCode = (code) => {
 /**
  * Removes all the children of the given HTML element
  * @param {HTMLElement} el 
+ * @param {String} class
  */
-const removeAllChildren = (el) => {
-    while (el.lastElementChild) {
+const removeAllChildrenWithClass = (el, className) => {
+    while (el.lastElementChild && (className === "" || el.lastElementChild.classList.contains(className))) {
         el.removeChild(el.lastElementChild);
     }
 };
@@ -147,12 +148,17 @@ const createRemovableTextNode = (text) => {
  */
 const updatePlayerList = (players) => {
     const playerList = document.getElementById("player-list");
-    removeAllChildren(playerList);
+    removeAllChildrenWithClass(playerList, "");
     players.forEach((player) => {
         const playerItem = document.createElement("li");
         playerItem.appendChild(document.createTextNode(player.nickname));
         playerList.appendChild(playerItem);
     });
+    if (players.length === 1) {
+        document.getElementById("more-player-error").style.display = "inline";
+    } else {
+        document.getElementById("more-player-error").style.display = "none";
+    }
 };
 
 /**
@@ -173,10 +179,11 @@ const createCard = (suit, status) => {
 };
 /**
  * Adds the list of cards in hand to the HTML element
- * @param {HTMLElement} el  The HTML Element to append hand markup to
- * @param {Object} hand     Contains an individual socket's nickname and hand
+ * @param {HTMLElement} el          The HTML Element to append hand markup to
+ * @param {Object} hand             Contains an individual socket's nickname and hand
+ * @param {Boolean} currentPlayer   Whether the hand is of this socket's player
  */
-const appendHandToElement = (el, hand) => {
+const appendHandToElement = (el, hand, currentPlayer) => {
     const h = hand.hand;
     const playerName = document.createElement("div");
     playerName.classList.add("player-name");
@@ -196,8 +203,14 @@ const appendHandToElement = (el, hand) => {
             playerHand.appendChild(createCard(undeterminedText, "undetermined"));
         }
     });
-    el.appendChild(playerName);
-    el.appendChild(playerHand);
+    
+    const player = document.createElement("div");
+    player.appendChild(playerName);
+    player.appendChild(playerHand);
+    if (currentPlayer) {
+        player.classList.add("other-player");
+    }
+    el.appendChild(player);
 };
 
 /**
@@ -205,17 +218,15 @@ const appendHandToElement = (el, hand) => {
  * @param {Object} hands    The hands of all players accessed by Socket ID
  */
 const updateHands = (hands) => {
-    const handList = document.getElementById("other-players");
-    removeAllChildren(handList);
+    const handList = document.getElementsByClassName("hands-container")[0];
+    removeAllChildrenWithClass(handList, "other-player");
     Object.keys(hands).forEach((sid) => {
         if (sid == socket.id) {
             const yourHand = document.getElementById("current-player");
-            removeAllChildren(yourHand);
-            appendHandToElement(yourHand, hands[sid]);
+            removeAllChildrenWithClass(yourHand, "");
+            appendHandToElement(yourHand, hands[sid], false);
         } else {
-            const playerHand = document.createElement("li");
-            appendHandToElement(playerHand, hands[sid]);
-            handList.appendChild(playerHand);
+            appendHandToElement(handList, hands[sid], true);
         }
     });
 };
@@ -259,7 +270,7 @@ const populateSelectors = () => {
  */
 const clearResponses = () => {
     document.getElementById("response-select-container").style.display = "none";
-    removeAllChildren(document.getElementById("response-text"));
+    removeAllChildrenWithClass(document.getElementById("response-text"), "");
 };
 
 /**
@@ -270,7 +281,7 @@ const updateTurn = (player) => {
     clearResponses();
     const turnTextContainer = document.getElementById("turn-text");
     const questionContainer = document.getElementById("question-container");
-    removeAllChildren(turnTextContainer);
+    removeAllChildrenWithClass(turnTextContainer, "");
     let turnText;
     if (player.sid == socket.id) {
         turnText = "Your turn";
@@ -341,3 +352,4 @@ const socketInit = () => {
 
 const socket = io.connect();
 socketInit(socket);
+document.getElementsByClassName("hands-container")[0].style.display = "none";
