@@ -6,6 +6,7 @@ class Player {
         this.sid = sid;
         this.nickname = nickname;
         this.hand = null;
+        this.score = 0;
     }
 
     /**
@@ -21,6 +22,20 @@ class Player {
      */
     getHand() {
         return this.hand;
+    }
+
+    /**
+     * Increments the player's score because they won the game
+     */
+    win() {
+        this.score += 3;
+    }
+
+    /**
+     * Decrements the player's score because they made a move that was illegal
+     */
+    madeIllegalMove() {
+        this.score -= 1;
     }
 
     /**

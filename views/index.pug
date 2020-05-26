@@ -58,10 +58,13 @@ block content
         section.score-container
         section.history-container
         section.round-container
+            h1.add-code
             .lobby-container
-                h1.add-code
+                .game-end
+                    h1.player-result
+                    p.score-result
                 ul(id="player-list")
-                button(type="button" onclick="startGame();") Start Game
+                button(type="button" onclick="startGame();") Start New Game
                 span(id="more-player-error") You need more players to start the game.
         section.hands-container.center-within
             #current-player
@@ -72,7 +75,7 @@ block content
                         label(for="player-select") Select a player: 
                         select(name="player-select" id="player-select")
                     .select
-                        label(for="suit-select") Select a suit:
+                        label(for="suit-select") Select a suit: 
                         select(name="suit-select" id="suit-select")
                     .center-inside
                         button(type="button" onclick="askQuestion();") Ask Question

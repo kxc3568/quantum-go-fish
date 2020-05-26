@@ -326,14 +326,40 @@ const updateQuestion = (question) => {
         responseTextContainer.appendChild(createRemovableTextNode(text));
     }
     responseTextContainer.style.display = "block";
-}
+};
 
 /**
  * Updates page with the winner of the game
  * @param {String} winner   The nickname of the winner of the game
  */
 const updateWinner = (winner) => {
+    document.getElementsByClassName("round-container")[0].style.display = "block";
+    document.getElementsByClassName("hands-container")[0].style.display = "none";
+    document.getElementsByClassName("game-end")[0].style.display = "flex";
+    const playerResult = document.getElementsByClassName("player-result")[0];
+    removeAllChildrenWithClass(playerResult, "");
+    playerResult.appendChild(createRemovableTextNode(winner + " has won 🤩"));
+    playerResult.appendChild(createRemovableTextNode("what a big brain!"));
+    const scoreResult = document.getElementsByClassName("score-result")[0];
+    removeAllChildrenWithClass(scoreResult, "");
+    scoreResult.appendChild(createRemovableTextNode(winner + " has earned 3 points."));
+};
 
+/**
+ * Updates page with the player that made an illegal move
+ * @param {String} loser    The nickname of the player that made an illegal move
+ */
+const updateLoser = (loser) => {
+    document.getElementsByClassName("round-container")[0].style.display = "block";
+    document.getElementsByClassName("hands-container")[0].style.display = "none";
+    document.getElementsByClassName("game-end")[0].style.display = "flex";
+    const playerResult = document.getElementsByClassName("player-result")[0];
+    removeAllChildrenWithClass(playerResult, "");
+    playerResult.appendChild(createRemovableTextNode("oh no 🤒"));
+    playerResult.appendChild(createRemovableTextNode(loser + " has made an illegal move!"));
+    const scoreResult = document.getElementsByClassName("score-result")[0];
+    removeAllChildrenWithClass(scoreResult, "");
+    scoreResult.appendChild(createRemovableTextNode(loser + " has lost 1 point."));
 };
 
 /**
@@ -348,6 +374,7 @@ const socketInit = () => {
     socket.on("Update Turn", player => updateTurn(player));
     socket.on("Question", question => updateQuestion(question));
     socket.on("Winner", winner => updateWinner(winner));
+    socket.on("Illegal Move", loser => updateLoser(loser));
 };
 
 const socket = io.connect();

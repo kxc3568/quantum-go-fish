@@ -28,10 +28,11 @@ class Round {
     }
 
     /**
-     * Retrieves the last action performed from history
+     * Retrieves the last action performed from history that is not a deduction
      */
-    getLastAction() {
-        return this.history[this.history.length-1];
+    getLastNonDeductionAction() {
+        const qaHistory = this.history.filter(action => action.type !== "Deduction");
+        return qaHistory[qaHistory.length - 1];
     }
 
     /**
@@ -111,6 +112,7 @@ class Round {
                         const numberOther = posSuits[1] - numberRemaining;
                         posSuits[1] -= numberOther;
                         this.simplify(hand, posSuits[0], suit, numberOther);
+                        this.history.push({ type: "Deduction", player: player, suit: suit, number: numberOther });
                     }
                 });
             });
@@ -143,15 +145,16 @@ class Round {
     ask(playerFromString, playerToString, suit) {
         const playerFrom = this.getPlayer(playerFromString);
         const playerFromHand = playerFrom.getHand();
+        this.history.push({ type: "Question", from: playerFromString, to: playerToString, suit: suit });
         if (playerFromHand.determined[suit] === 0) {
             playerFrom.determine(suit);
             this.determined[suit] += 1;
             this.makeDeductions();
             if (this.checkWinConditions()) {
+                playerFrom.win();
                 return playerFromString;
             }
         }
-        this.history.push({ type: "Question", from: playerFromString, to: playerToString, suit: suit });
         return "";
     }
 
@@ -161,7 +164,6 @@ class Round {
      */
     updateDetermined(newDetermines) {
         Object.keys(newDetermines).forEach(key => {
-            
             this.determined[key] += newDetermines[key];
         });
     }
@@ -176,6 +178,7 @@ class Round {
      */
     respond(playerFrom, playerToString, res, suit) {
         const playerTo = this.getPlayer(playerToString);
+        this.history.push({ type: "Response", from: playerToString, to: playerFrom.nickname, suit: suit });
         if (res === "Yes") {
             const playerToHand = playerTo.getHand();
             if (playerToHand.determined[suit] === 0) {
@@ -189,9 +192,9 @@ class Round {
         }
         this.makeDeductions();
         if (this.checkWinConditions()) {
+            playerFrom.win();
             return playerFrom.nickname;
         }
-        this.history.push({ type: "Response", from: playerToString, to: playerFrom.nickname, suit: suit });
         return "";
     }
 }

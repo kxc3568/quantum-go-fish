@@ -46,7 +46,7 @@ const onQuestion = (app, data) => {
 const onResponse = (app, data) => {
     const round = app.gm.getGame(data.room).getRound();
     const questionFrom = round.getTurnPlayer();
-    const lastAction = round.getLastAction();
+    const lastAction = round.getLastNonDeductionAction();
     const winner = round.respond(questionFrom, data.responseFrom, data.response, lastAction.suit);
     app.io.in(data.room).emit("Update Hands", round.getHands());
     if (winner !== "") {
