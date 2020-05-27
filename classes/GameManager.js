@@ -32,9 +32,9 @@ class GameManager {
      * @param {Socket ID} sid       ID of the socket associated with the player that created the game
      * @param {String} nickname     The player that created the game's nickname
      */
-    createGame(sid, nickname) {
+    createGame(sid, nickname, settings) {
         const code = this.generateCode();
-        this.games.set(code, new Game(sid, nickname));
+        this.games.set(code, new Game(sid, nickname, settings));
         return { code: code, players: this.games.get(code).getPlayers() };
     }
 

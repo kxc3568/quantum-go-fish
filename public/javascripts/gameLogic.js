@@ -54,7 +54,14 @@ const createGame = () => {
     const nickname = document.getElementById("create-name").value;
     if (validName(nickname)) {
         socket.nickname = nickname;
-        socket.emit("Create Game", { sid: socket.id, nickname: nickname });
+        socket.emit("Create Game", { 
+            sid: socket.id,
+            nickname: nickname,
+            settings: {
+                determineSuits: document.getElementById("setting-determined").checked,
+                showHistory: document.getElementById("setting-history").checked
+            }
+        });
         toLobbyView();
     } else {
         const nameError = document.getElementById("invalid-create-name");
@@ -156,6 +163,13 @@ const updatePlayerList = (players) => {
     } else {
         document.getElementById("more-player-error").style.display = "none";
     }
+};
+
+/**
+ * Disables the view of the history of moves and deductions
+ */
+const disableHistory = () => {
+
 };
 
 /**
@@ -367,6 +381,7 @@ const socketInit = () => {
     socket.on("Joined Game", data => processJoinResults(data));
     socket.on("Update Players", players => updatePlayerList(players));
     socket.on("Game Started", data => processStartGame(data));
+    socket.on("Disable History", disableHistory);
     socket.on("Update Hands", hands => updateHands(hands));
     socket.on("Update Turn", player => updateTurn(player));
     socket.on("Question", question => updateQuestion(question));

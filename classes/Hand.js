@@ -55,7 +55,12 @@ class Hand {
      * @param {String} suit     The suit of the added card
      */
     addCard(suit) {
-        this.determined[suit] += 1;
+        if (suit === "") {
+            this.undetermined[0][1] += 1;
+            console.log(this.undetermined)
+        } else {
+            this.determined[suit] += 1;
+        }
     }
 
     /**
@@ -63,7 +68,12 @@ class Hand {
      * @param {String} suit     The suit of the lost card
      */
     loseCard(suit) {
-        this.determined[suit] -= 1;
+        if (suit === "") {
+            this.undetermined[0][1] -= 1;
+            console.log(this.undetermined)
+        } else {
+            this.determined[suit] -= 1;
+        }
     }
 }
 

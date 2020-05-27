@@ -1,5 +1,5 @@
 const onCreateGame = (app, data, clientSocket) => {
-    const { code, players } = app.gm.createGame(data.sid, data.nickname);
+    const { code, players } = app.gm.createGame(data.sid, data.nickname, data.settings);
     clientSocket.join(code);
     clientSocket.room = code;
     app.io.to(clientSocket.id).emit("Room Code", clientSocket.room);
@@ -32,6 +32,9 @@ const onStartGame = (app, clientSocket) => {
         const round = game.getRound();
         app.io.in(clientSocket.room).emit("Update Hands", round.getHands());
         app.io.in(clientSocket.room).emit("Update Turn", round.getPlayers()[round.advanceTurn()]);
+        if (!round.getSettings().showHistory) {
+            app.io.in(clientSocket.room).emit("Disable History");
+        }
     }
 };
 

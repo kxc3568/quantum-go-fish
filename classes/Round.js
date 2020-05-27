@@ -28,6 +28,13 @@ class Round {
     }
 
     /**
+     * Gets the settings of the current round
+     */
+    getSettings() {
+        return this.settings;
+    }
+
+    /**
      * Retrieves the last action performed from history that is not a deduction
      */
     getLastNonDeductionAction() {
@@ -47,7 +54,10 @@ class Round {
      */
     getHands() {
         const hands = {};
-        this.getPlayers().forEach(player => hands[player.sid] = { nickname: player.nickname, hand: player.getHand() });
+        this.getPlayers().forEach(player => hands[player.sid] = { 
+            nickname: player.nickname,
+            hand: this.settings.determineSuits ? player.getHand() : player.getShownHand()
+        });
         return hands;
     }
 
@@ -158,7 +168,7 @@ class Round {
         if (res === "Yes") {
             return this.validQuestion(hand, suit);
         }
-        return this.determined[suit] === 0;
+        return hand.determined[suit] === 0;
     }
 
     /**

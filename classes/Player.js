@@ -6,6 +6,7 @@ class Player {
         this.sid = sid;
         this.nickname = nickname;
         this.hand = null;
+        this.shownHand = null;
         this.score = 0;
     }
 
@@ -15,6 +16,7 @@ class Player {
      */
     initHand(suits) {
         this.hand = new Hand(suits);
+        this.shownHand = new Hand(suits);
     }
 
     /**
@@ -22,6 +24,13 @@ class Player {
      */
     getHand() {
         return this.hand;
+    }
+
+    /**
+     * Retrieves the player's hand as all undetermined
+     */
+    getShownHand() {
+        return this.shownHand;
     }
 
     /**
@@ -61,8 +70,10 @@ class Player {
      * @param {String} suit     The suit of the card being transferred
      */
     transferCard(player, suit) {
+        this.shownHand.loseCard("");
         this.hand.loseCard(suit);
         player.getHand().addCard(suit);
+        player.getShownHand().addCard("");
     }
 }
 
