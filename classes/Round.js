@@ -138,6 +138,30 @@ class Round {
     }
 
     /**
+     * Updates the round-scoped determined variable based on a player's hand before and after narrow()
+     * @param {Object} newDetermines    Object holding newly determined suits with 'suit' : number of new determines
+     */
+    updateDetermined(newDetermines) {
+        Object.keys(newDetermines).forEach(key => {
+            this.determined[key] += newDetermines[key];
+        });
+    }
+
+    validQuestion(hand, suit) {
+        if (hand.determined[suit] > 0) {
+            return true;
+        }
+        return hand.undetermined.filter(posSuits => posSuits[0].indexOf(suit) > -1).length > 0;
+    }
+
+    validResponse(hand, res, suit) {
+        if (res === "Yes") {
+            return this.validQuestion(hand, suit);
+        }
+        return this.determined[suit] === 0;
+    }
+
+    /**
      * Determines values of playerFrom's hand based on the question
      * @param {String} playerFromString     The name of the player that asked the question
      * @param {String} suit                 The suit that is being asked
@@ -146,6 +170,9 @@ class Round {
         const playerFrom = this.getPlayer(playerFromString);
         const playerFromHand = playerFrom.getHand();
         this.history.push({ type: "Question", from: playerFromString, to: playerToString, suit: suit });
+        if (!this.validQuestion(playerFrom.getHand(), suit)) {
+            return "Illegal Question";
+        }
         if (playerFromHand.determined[suit] === 0) {
             playerFrom.determine(suit);
             this.determined[suit] += 1;
@@ -159,16 +186,6 @@ class Round {
     }
 
     /**
-     * Updates the round-scoped determined variable based on a player's hand before and after narrow()
-     * @param {Object} newDetermines    Object holding newly determined suits with 'suit' : number of new determines
-     */
-    updateDetermined(newDetermines) {
-        Object.keys(newDetermines).forEach(key => {
-            this.determined[key] += newDetermines[key];
-        });
-    }
-
-    /**
      * Determines or narrows values of playerTo's hand based on playerTo's response
      * to playerFrom's question. Processes transferring of cards between players.
      * @param {String} playerFromString     The name of the player that asked the question
@@ -179,6 +196,9 @@ class Round {
     respond(playerFrom, playerToString, res, suit) {
         const playerTo = this.getPlayer(playerToString);
         this.history.push({ type: "Response", from: playerToString, to: playerFrom.nickname, suit: suit });
+        if (!this.validResponse(playerTo.getHand(), res, suit)) {
+            return "Illegal Response";
+        }
         if (res === "Yes") {
             const playerToHand = playerTo.getHand();
             if (playerToHand.determined[suit] === 0) {

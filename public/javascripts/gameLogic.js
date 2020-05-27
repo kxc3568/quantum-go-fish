@@ -82,8 +82,7 @@ const joinGame = () => {
  * Pings the server socket to start the game for all players
  */
 const startGame = () => {
-    const code = document.getElementsByClassName("add-code")[0].innerHTML;
-    socket.emit("Start Game", { code: code });
+    socket.emit("Start Game");
 };
 
 /**
@@ -94,8 +93,7 @@ const askQuestion = () => {
     const ss = document.getElementById("suit-select");
     const nickname = ps.options[ps.selectedIndex].value;
     const suit = ss.options[ss.selectedIndex].value;
-    const code = document.getElementsByClassName("add-code")[0].innerHTML;
-    socket.emit("Question", { room: code, questionFrom: socket.nickname, questionTo: nickname, suit: suit });
+    socket.emit("Question", { questionFrom: socket.nickname, questionTo: nickname, suit: suit });
 };
 
 /**
@@ -104,8 +102,7 @@ const askQuestion = () => {
 const answerQuestion = () => {
     const rs = document.getElementById("response-select");
     const response = rs.options[rs.selectedIndex].value;
-    const code = document.getElementsByClassName("add-code")[0].innerHTML;
-    socket.emit("Response", { room: code, response: response, responseFrom: socket.nickname });
+    socket.emit("Response", { response: response, responseFrom: socket.nickname });
 };
 
 //

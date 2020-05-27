@@ -33,10 +33,10 @@ class Game {
 
     /**
      * Removes the player associated with the given nickname from the game
-     * @param {String} nickname     The nickname of the player
+     * @param {SocketId} sid     The socked id of the player
      */
-    removePlayer(nickname) {
-
+    removePlayer(sid) {
+        this.players = this.players.filter(player => player.sid !== sid);
     }
 
     /**
