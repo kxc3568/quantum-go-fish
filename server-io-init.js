@@ -32,10 +32,10 @@ const onStartGame = (app, clientSocket) => {
         const round = game.getRound();
         app.io.in(clientSocket.room).emit("Update Hands", round.getHands());
         app.io.in(clientSocket.room).emit("Update Turn", round.getPlayers()[round.advanceTurn()]);
-        app.io.in(clientSocket.room).emit("Update History", round.getHistory());
         if (!round.getSettings().showHistory) {
-            app.io.in(clientSocket.room).emit("Disable History");
+            round.getHistory().push({ type: "Disabled" });
         }
+        app.io.in(clientSocket.room).emit("Update History", round.getHistory());
     }
 };
 

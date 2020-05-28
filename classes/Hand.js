@@ -57,7 +57,6 @@ class Hand {
     addCard(suit) {
         if (suit === "") {
             this.undetermined[0][1] += 1;
-            console.log(this.undetermined)
         } else {
             this.determined[suit] += 1;
         }
@@ -70,7 +69,6 @@ class Hand {
     loseCard(suit) {
         if (suit === "") {
             this.undetermined[0][1] -= 1;
-            console.log(this.undetermined)
         } else {
             this.determined[suit] -= 1;
         }

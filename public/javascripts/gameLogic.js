@@ -141,13 +141,9 @@ const removeAllChildrenWithClass = (el, className) => {
 /**
  * Creates a paragraph node with the given text
  * @param {String} text 
- * @param {String} cl
  */
-const createRemovableTextNode = (text, cl) => {
+const createRemovableTextNode = (text) => {
     const p = document.createElement("p");
-    if (cl !== "") {
-        p.classList.add(cl);
-    }
     p.appendChild(document.createTextNode(text));
     return p;
 };
@@ -165,8 +161,8 @@ const updatePlayerList = (players) => {
         const playerItem = document.createElement("li");
         playerItem.appendChild(document.createTextNode(player.nickname));
         playerList.appendChild(playerItem);
-        scoresList.appendChild(createRemovableTextNode(player.nickname, ""));
-        scoresList.appendChild(createRemovableTextNode(player.score, ""));
+        scoresList.appendChild(createRemovableTextNode(player.nickname));
+        scoresList.appendChild(createRemovableTextNode(player.score));
     });
     if (players.length === 1) {
         document.getElementById("more-player-error").style.display = "inline";
@@ -179,7 +175,7 @@ const updatePlayerList = (players) => {
  * Disables the view of the history of moves and deductions
  */
 const disableHistory = () => {
-    document.getElementsByClassName("no-history")[0].classList.add("hidden");
+    historyDisabled = true;
 };
 
 /**
@@ -314,7 +310,7 @@ const updateTurn = (player) => {
         turnText = "Waiting for " + player.nickname + " to make a move...";
         questionContainer.style.display = "none";
     }
-    turnTextContainer.appendChild(createRemovableTextNode(turnText, ""));
+    turnTextContainer.appendChild(createRemovableTextNode(turnText));
 };
 
 const makeEntry = (entry) => {
@@ -332,13 +328,13 @@ const makeEntry = (entry) => {
 
 const updateHistory = (history) => {
     const historyContainer = document.getElementsByClassName("history")[0]; 
-    removeAllChildrenWithClass(historyContainer, "see-history");
-    if (document.getElementsByClassName("no-history")[0].classList.length < 2) {
-        if (history.length === 0) {
-            historyContainer.appendChild(createRemovableTextNode("Make a move to see the history!", "see-history"))
-        } else {
-            history.forEach(entry => historyContainer.appendChild(createRemovableTextNode(makeEntry(entry), "see-history")));
-        }
+    removeAllChildrenWithClass(historyContainer, "");
+    if (history.length === 0) {
+        historyContainer.appendChild(createRemovableTextNode("Make a move to see the history!"))
+    } else if (history[0].type === "Disabled") {
+        historyContainer.appendChild(createRemovableTextNode("You've disabled viewing history, sorry!"))
+    } else {
+        history.forEach(entry => historyContainer.appendChild(createRemovableTextNode(makeEntry(entry))));
     }
 };
 
@@ -360,7 +356,7 @@ const updateQuestion = (question) => {
     let text;
     if (question.questionTo === socket.nickname) {
         text = question.questionFrom + " asks if you have any " + question.suit + "s.";
-        responseTextContainer.appendChild(createRemovableTextNode(text, ""));
+        responseTextContainer.appendChild(createRemovableTextNode(text));
         const responseSelect = document.getElementById("response-select");
         if (responseSelect.children.length == 0) {
             addOption(responseSelect, "Yes");
@@ -369,7 +365,7 @@ const updateQuestion = (question) => {
         document.getElementById("response-select-container").style.display = "block";
     } else {
         text = "Waiting for " + question.questionTo + " to determine if he/she has any " + question.suit + "s...";
-        responseTextContainer.appendChild(createRemovableTextNode(text, ""));
+        responseTextContainer.appendChild(createRemovableTextNode(text));
     }
     responseTextContainer.style.display = "block";
 };
@@ -384,11 +380,11 @@ const updateWinner = (winner) => {
     document.getElementsByClassName("game-end")[0].style.display = "flex";
     const playerResult = document.getElementsByClassName("player-result")[0];
     removeAllChildrenWithClass(playerResult, "");
-    playerResult.appendChild(createRemovableTextNode(winner + " has won 🤩", ""));
-    playerResult.appendChild(createRemovableTextNode("what a big brain!", ""));
+    playerResult.appendChild(createRemovableTextNode(winner + " has won 🤩"));
+    playerResult.appendChild(createRemovableTextNode("what a big brain!"));
     const scoreResult = document.getElementsByClassName("score-result")[0];
     removeAllChildrenWithClass(scoreResult, "");
-    scoreResult.appendChild(createRemovableTextNode(winner + " has earned 3 points.", ""));
+    scoreResult.appendChild(createRemovableTextNode(winner + " has earned 3 points."));
 };
 
 /**
@@ -401,11 +397,11 @@ const updateLoser = (loser) => {
     document.getElementsByClassName("game-end")[0].style.display = "flex";
     const playerResult = document.getElementsByClassName("player-result")[0];
     removeAllChildrenWithClass(playerResult, "");
-    playerResult.appendChild(createRemovableTextNode("oh no 🤒", ""));
-    playerResult.appendChild(createRemovableTextNode(loser + " has made an illegal move!", ""));
+    playerResult.appendChild(createRemovableTextNode("oh no 🤒"));
+    playerResult.appendChild(createRemovableTextNode(loser + " has made an illegal move!"));
     const scoreResult = document.getElementsByClassName("score-result")[0];
     removeAllChildrenWithClass(scoreResult, "");
-    scoreResult.appendChild(createRemovableTextNode(loser + " has lost 1 point.", ""));
+    scoreResult.appendChild(createRemovableTextNode(loser + " has lost 1 point."));
 };
 
 /**
@@ -416,7 +412,7 @@ const socketInit = () => {
     socket.on("Joined Game", data => processJoinResults(data));
     socket.on("Update Players", players => updatePlayerList(players));
     socket.on("Game Started", data => processStartGame(data));
-    socket.on("Disable History", disableHistory);
+    // socket.on("Disable History", disableHistory);
     socket.on("Update Hands", hands => updateHands(hands));
     socket.on("Update Turn", player => updateTurn(player));
     socket.on("Update History", history => updateHistory(history));
@@ -437,4 +433,5 @@ const viewInit = () => {
 
 const socket = io.connect();
 socketInit(socket);
+let historyDisabled = false;
 viewInit();
