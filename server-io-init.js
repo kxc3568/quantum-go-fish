@@ -32,6 +32,7 @@ const onStartGame = (app, clientSocket) => {
         const round = game.getRound();
         app.io.in(clientSocket.room).emit("Update Hands", round.getHands());
         app.io.in(clientSocket.room).emit("Update Turn", round.getPlayers()[round.advanceTurn()]);
+        app.io.in(clientSocket.room).emit("Update History", round.getHistory());
         if (!round.getSettings().showHistory) {
             app.io.in(clientSocket.room).emit("Disable History");
         }
@@ -43,6 +44,7 @@ const onQuestion = (app, data, clientSocket) => {
     const round = app.gm.getGame(clientSocket.room).getRound();
     const winner = round.ask(data.questionFrom, data.questionTo, data.suit);
     app.io.in(clientSocket.room).emit("Update Hands", round.getHands());
+    app.io.in(clientSocket.room).emit("Update History", round.getHistory());
     if (winner === "Illegal Question") {
         app.io.in(clientSocket.room).emit("Illegal Move", data.questionFrom);
         app.io.in(clientSocket.room).emit("Update Players", round.getPlayers());
@@ -58,6 +60,7 @@ const onResponse = (app, data, clientSocket) => {
     const lastAction = round.getLastNonDeductionAction();
     const winner = round.respond(questionFrom, data.responseFrom, data.response, lastAction.suit);
     app.io.in(clientSocket.room).emit("Update Hands", round.getHands());
+    app.io.in(clientSocket.room).emit("Update History", round.getHistory());
     if (winner === "Illegal Response") {
         app.io.in(clientSocket.room).emit("Illegal Move", data.responseFrom);
         app.io.in(clientSocket.room).emit("Update Players", round.getPlayers());

@@ -64,6 +64,9 @@
 .scores, .history {
     display: flex;
     flex-direction: column;
+    max-height: 38vh;
+    overflow-x: hidden;
+    overflow-y: auto;
 }
 
 .scores {
@@ -71,6 +74,19 @@
     margin: 0 auto;
     display: grid;
     grid-template-columns: repeat(2, 1fr);
+}
+
+.history {
+    margin: 0 0.5rem;
+}
+
+.no-history {
+    display: block;
+    padding: 0.25rem;
+}
+
+.hidden {
+    display: none;
 }
 
 .round-container {
@@ -165,6 +181,9 @@
         grid-template-columns: repeat(2, 1fr);
         border: 1px solid black;
         padding: 1rem;
+        max-height: 85vh;
+        overflow-x: hidden;
+        overflow-y: auto;
     }
 
     .hands-container div:nth-child(1) {

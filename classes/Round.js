@@ -27,6 +27,10 @@ class Round {
         }
     }
 
+    getHistory() {
+        return this.history;
+    }
+
     /**
      * Gets the settings of the current round
      */
@@ -122,7 +126,7 @@ class Round {
                         const numberOther = posSuits[1] - numberRemaining;
                         posSuits[1] -= numberOther;
                         this.simplify(hand, posSuits[0], suit, numberOther);
-                        this.history.push({ type: "Deduction", player: player, suit: suit, number: numberOther });
+                        this.history.push({ type: "Deduction", player: player.nickname, suit: suit, number: numberRemaining });
                     }
                 });
             });
