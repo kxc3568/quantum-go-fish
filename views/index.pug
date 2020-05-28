@@ -55,8 +55,17 @@ block content
                 button(type="button" onclick="toHomeView();") Back to Home
 
     #game-container.content-container.game-container
-        section.score-container
-        section.history-container
+        .score-history-container
+            .score-container
+                .score-history-label
+                    button(type="button" onclick="toggleScores();" class="score-history-label-button") View Scores
+                    .score-history-label-div View Scores
+                .scores
+            .history-container
+                .score-history-label
+                    button(type="button" onclick="toggleHistory();" class="score-history-label-button") View History
+                    .score-history-label-div View History
+                .history
         section.round-container
             h1.add-code
             .lobby-container

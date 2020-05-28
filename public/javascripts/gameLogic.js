@@ -4,7 +4,7 @@
 const toLobbyView = () => {
     hideAll();
     let toShow = document.getElementById("game-container");
-    toShow.style.display = "flex";
+    toShow.style.display = "";
 };
 
 /**
@@ -15,7 +15,9 @@ const processStartGame = (data) => {
     if (data.success) {
         document.getElementsByClassName("hands-container")[0].style.display = "";
         document.getElementsByClassName("round-container")[0].style.display = "none";
-        document.getElementsByClassName("history-container")[0].style.display = "flex"
+        document.getElementsByClassName("history-container")[0].style.display = "flex";
+        document.getElementsByClassName("score-container")[0].style.display = "flex";
+        document.getElementsByClassName("score-history-container")[0].style.display = "";
     } else {
         document.getElementById("more-player-error").style.display = "inline";
     }
@@ -148,15 +150,19 @@ const createRemovableTextNode = (text) => {
 
 /**
  * Updates the lobby player list with the given nickname
- * @param {String} players      The list of current players in the game
+ * @param {Player[]} players      The list of current players in the game
  */
 const updatePlayerList = (players) => {
     const playerList = document.getElementById("player-list");
     removeAllChildrenWithClass(playerList, "");
+    const scoresList = document.getElementsByClassName("scores")[0];
+    removeAllChildrenWithClass(scoresList, "");
     players.forEach((player) => {
         const playerItem = document.createElement("li");
         playerItem.appendChild(document.createTextNode(player.nickname));
         playerList.appendChild(playerItem);
+        scoresList.appendChild(createRemovableTextNode(player.nickname));
+        scoresList.appendChild(createRemovableTextNode(player.score));
     });
     if (players.length === 1) {
         document.getElementById("more-player-error").style.display = "inline";
@@ -389,6 +395,16 @@ const socketInit = () => {
     socket.on("Illegal Move", loser => updateLoser(loser));
 };
 
+const viewInit = () => {
+    document.getElementsByClassName("hands-container")[0].style.display = "none";
+    document.getElementById("game-container").style.display = "none";
+    if (window.getComputedStyle(document.getElementsByClassName("score-history-label-button")[0]).getPropertyValue("display") !== "none") {
+        document.getElementsByClassName("scores")[0].style.display = "none";
+        document.getElementsByClassName("history")[0].style.display = "none";
+    }
+    document.getElementsByClassName("score-history-container")[0].style.display = "none";
+};
+
 const socket = io.connect();
 socketInit(socket);
-document.getElementsByClassName("hands-container")[0].style.display = "none";
+viewInit();

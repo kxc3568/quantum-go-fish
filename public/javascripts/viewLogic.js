@@ -53,3 +53,22 @@ const updateJoinButton = () => {
         joinGameBtn.setAttribute("disabled", "true");
     }
 };
+
+const toggleScores = () => {
+    const scores = document.getElementsByClassName("scores")[0];
+    if (scores.style.display === "none") {
+        scores.style.display = "";
+    } else {
+        scores.style.display = "none";
+    }
+    
+};
+
+const toggleHistory = () => {
+    const history = document.getElementsByClassName("history")[0];
+    if (history.style.display === "none") {
+        history.style.display = "";
+    } else {
+        history.style.display = "none";
+    }
+};

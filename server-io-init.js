@@ -45,8 +45,10 @@ const onQuestion = (app, data, clientSocket) => {
     app.io.in(clientSocket.room).emit("Update Hands", round.getHands());
     if (winner === "Illegal Question") {
         app.io.in(clientSocket.room).emit("Illegal Move", data.questionFrom);
+        app.io.in(clientSocket.room).emit("Update Players", round.getPlayers());
     } else if (winner !== "") {
         app.io.in(clientSocket.room).emit("Winner", winner);
+        app.io.in(clientSocket.room).emit("Update Players", round.getPlayers());
     }
 };
 
@@ -58,8 +60,10 @@ const onResponse = (app, data, clientSocket) => {
     app.io.in(clientSocket.room).emit("Update Hands", round.getHands());
     if (winner === "Illegal Response") {
         app.io.in(clientSocket.room).emit("Illegal Move", data.responseFrom);
+        app.io.in(clientSocket.room).emit("Update Players", round.getPlayers());
     } else if (winner !== "") {
         app.io.in(clientSocket.room).emit("Winner", winner);
+        app.io.in(clientSocket.room).emit("Update Players", round.getPlayers());
     } else {
         app.io.in(clientSocket.room).emit("Update Turn", round.getPlayers()[round.advanceTurn()]);
     }

@@ -98,7 +98,7 @@
     top: 0;
 }
 
-#create-game-container, #join-game-container, #game-container, .nav-inputs span, .desktop-landing {
+#create-game-container, #join-game-container, .nav-inputs span, .desktop-landing {
     display: none;
 }
 
@@ -120,10 +120,8 @@ input[type="text"] {
 }
 
 button {
-    display: block;
     background-color: var(--color-main);
-    border-color: black;
-    border-style: solid;
+    border: 1px solid black;
     font-size: 1rem;
     padding: 0.75rem;
     margin: 2rem;

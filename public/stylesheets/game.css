@@ -7,21 +7,70 @@
     margin: 0 auto;
 }
 
-.game-container, .hands-container, .history-container, #question-container, #response-text, #response-select-container {
+.hands-container, .history-container, .score-container, #question-container, #response-text, #response-select-container {
     display: none;
 }
 
 .game-container {
+    display: block;
     flex-direction: row;
-    padding: 0 2rem;
+    width: 80vw;
+    margin: 0.5rem auto 0;
 }
 
-.history-container, .lobby-container {
+.score-history-container {
+    display: flex;
     flex-direction: column;
+}
+
+.history-container, .score-container, .lobby-container {
+    flex-direction: column;
+}
+
+.history-container, .score-container {
+    border: 1px solid black;
+}
+
+.history-container {
+    margin-top: 1rem;
+}
+
+.score-history-label-button, .score-history-label-div {
+    font-size: 1.25rem;
+    background-color: var(--color-main);
+    border-bottom: 1px solid black;
+    padding: 0 2rem;
+    margin: 0;
+    width: 100%;
+}
+
+.score-history-label-button {
+    display: block;
+}
+
+.score-history-label-div {
+    display: none;
 }
 
 .lobby-container {
     display: flex;
+}
+
+.score-dropdown-text, .history-dropdown-text {
+    display: flex;
+    flex-direction: column;
+}
+
+.scores, .history {
+    display: flex;
+    flex-direction: column;
+}
+
+.scores {
+    width: 80%;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
 }
 
 .round-container {
@@ -89,17 +138,33 @@
 
 @media (min-width: 1024px) {
     .game-container {
+        display: flex;
         width: 80vw;
         margin: 3rem auto 0;
     }
 
-    .history-container, .lobby-container {
+    .score-history-container {
+        margin-right: 4rem;
+        width: 40%;
+    }
+
+    .lobby-container {
         width: 40vw;
+    }
+
+    .score-history-label-button {
+        display: none;
+    }
+    
+    .score-history-label-div {
+        display: block;
     }
 
     .hands-container {
         display: grid;
         grid-template-columns: repeat(2, 1fr);
+        border: 1px solid black;
+        padding: 1rem;
     }
 
     .hands-container div:nth-child(1) {
