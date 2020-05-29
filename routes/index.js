@@ -10,8 +10,4 @@ router.get('/how-to-play', (req, res) => {
     res.render('how-to-play');
 });
 
-router.get('/about', (req, res) => {
-    res.render('about');
-});
-
 module.exports = router;
