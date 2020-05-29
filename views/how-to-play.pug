@@ -1,0 +1,102 @@
+extends layout
+
+block styles
+    link(rel="stylesheet", href="/stylesheets/how-to-play.css")
+
+block content
+    .container
+        h1 Quantum Go Fish
+        section
+            h2
+                u Overview
+            p
+                | Quantum Go Fish takes inspiration from the classic game of Go Fish in many ways but adds an unfamiliar and exciting twist. Players
+                | start off with an undetermined set of cards and ask or answer questions "Go Fish"-style to determine what the identity of their cards
+                | are. Each player can win the game by provably having four-of-a-kind of a card or asking a question that determines the identity of
+                | all other cards. A more detailed overview and explanation of the game can be found 
+                a(href="https://stacky.net/wiki/index.php?title=Quantum_Go_Fish" target="_blank") here
+                |  as well.
+        section
+            .table-of-contents
+                h2 Table of Contents
+                ol
+                    li
+                        a(href="#how-to") How to Play
+                        ol
+                            li
+                                a(href="#setup") Setup
+                            li
+                                a(href="#gameplay") Gameplay
+                            li
+                                a(href="#winlose") Winning and Losing
+                            li
+                                a(href="#example") A Simple Example
+                    li
+                        a(href="#implementation") Implementation Specifics
+        section
+            h2#how-to
+                u How to Play
+            h3#setup Setup
+            p
+                | To first clarify some terminology, we use the term "suit" to denote the numerical value of the card. There are no traditional suits
+                | as there are in playing cards.
+                br
+            p
+                | Each player starts off with 4 cards that are all undetermined. There is no deck as there is in Go Fish. The number of suits in the
+                | set of all cards is equal to the number of players. For instance, if there are 4 players, each player will start off with 4 cards
+                | and the set of all cards would be { four 1s, four 2s, four 3s, four 4s } where 1, 2, 3, and 4 are the different suits in the game.
+                | And so, at the start of the game, each player's cards are all undetermined meaning that they could all be any of 1, 2, 3, or 4
+                | until more information is received or decided.
+            h3#gameplay Gameplay
+            p
+                | The game is played in a similar way to Go Fish and is question-driven, though there is no deck to draw from. In Go Fish, a player can
+                | only ask for a card if they have another copy of that card -- and the same is true in Quantum Go Fish. However, at the start, everyone's
+                | cards are undetermined. The key idea to this game is that if it is possible for you to both have or not have a card of a certain suit,
+                | you may choose for yourself whether or not you do when you ask a question or respond to someone else's question.
+                br
+            p
+                | At the start of the game, the player who starts the game must choose a suit for one of the cards that he/she has. Only by doing that,
+                | can he/she ask someone else for a card (of that same suit). Similarly, by asking a question, you determine for everyone else that you 
+                | must have a card of that suit. 
+                br
+            p
+                | In a similar way, by responding to a player's question that you do have a card, you determine that you must have a card of that suit (if
+                | you did not already) and you give that card to the other player. By responding that you don't have a card of that suit, you determine for
+                | everyone that none of your undetermined cards can be of that suit.
+            h3#winlose Winning and Losing
+            p 
+                | You can win in 2 ways. One is that you determine that you have four-of-a-kind for some suit of card. And the other is if you ask a
+                | question that determines the identities of all other undetermined cards.
+                br
+            p
+                | On the other hand, you can lose by making an illegal move. This could be claiming that you don't have a card of some suit when it is
+                | already determined that you must have a card of that suit or vice versa. When someone makes an illegal move, the game ends and nobody
+                | wins.
+            h3#example A Simple Example
+            p
+                | The most simple example of this is a 2-player game. The game starts with both players have 4 cards that are all either 1 or 2. Player 1
+                | asks Player 2 if he/she has any 1s. By doing this, Player 1 determines that he/she must have a 1.
+                br
+            p
+                | If Player 2 says yes, then Player 2 has determined one of his/her cards to be a 1 and must give that card to Player 1. If Player 2 says
+                | no, the game ends and Player 1 wins. Because Player 2 has no 1s, Player 1 must have all of the 1s and Player 2 must also have all of the
+                | 2s. While this case is strange in that both players have four-of-a-kind, Player 1 also asked the question that resulted in the
+                | determination of all suit identities.
+        section
+            h2#implementation
+                u Implementation Specifics
+            p
+                | When thinking about this game and implementing it as a web client, a few vague parts of the game were revealed. Here are the stances I 
+                | took on these ideas or how I worked around them.
+                br
+            ul
+                li
+                    | As a game, I decided it would make more sense for someone who makes an illegal move to be penalized more than the others. I decided
+                    | to make a point system where that person would lose a point and the other players would not.
+                li
+                    | For the possible win condition of determining all other card identities in the game, I decided to interpret that as whoever asks the 
+                    | question wins even if it is the response that determined the identities and not the question.
+                li
+                    | I imagine if the game were played by memory, you would have to claim to have won at any point. I decided to just automatically win 
+                    | the game for someone who has met a win condition, but maybe I will introduce a new setting in the future to have to claim to have won
+                    | before actually winning.

@@ -6,12 +6,8 @@ router.get('/', (req, res) => {
     res.render('index');
 });
 
-router.get('/create', (req, res) => {
-    res.render('create');
-});
-
-router.get('/join', (req, res) => {
-    res.render('join');
+router.get('/how-to-play', (req, res) => {
+    res.render('how-to-play');
 });
 
 module.exports = router;

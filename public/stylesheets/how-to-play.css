@@ -1,0 +1,41 @@
+.container {
+    width: 85vw;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.container h1, a {
+    color: var(--color-main);
+}
+
+.container section {
+    width: 100%;
+}
+
+.container p, .container ul li {
+    margin-bottom: 2rem;
+    font-size: 0.9rem;
+    line-height: 200%;
+}
+
+.container p {
+    text-indent: 3rem;
+}
+
+.table-of-contents {
+    border: 1px solid black;
+    padding-left: 0.5rem;
+}
+
+@media (min-width: 1024px) {
+    .container {
+        width: 50vw;
+    }
+
+    .table-of-contents {
+        width: 80%;
+        margin: 0 auto 2rem;
+    }
+}
