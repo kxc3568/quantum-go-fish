@@ -64,7 +64,7 @@
 .scores, .history {
     display: flex;
     flex-direction: column;
-    max-height: 38vh;
+    max-height: 36vh;
     overflow-x: hidden;
     overflow-y: auto;
 }
@@ -181,7 +181,7 @@
         grid-template-columns: repeat(2, 1fr);
         border: 1px solid black;
         padding: 1rem;
-        max-height: 85vh;
+        max-height: 80vh;
         overflow-x: hidden;
         overflow-y: auto;
     }

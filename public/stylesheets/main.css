@@ -98,6 +98,10 @@
     top: 0;
 }
 
+.desktop-header {
+    display: none;
+}
+
 #create-game-container, #join-game-container, .nav-inputs span, .desktop-landing {
     display: none;
 }
@@ -163,6 +167,24 @@ button:hover {
 @media (min-width: 1024px) {
     .mobile-header {
         display: none;
+    }
+
+    .desktop-header {
+        display: grid;
+        grid-template-columns: repeat(8, 1fr);
+    }
+
+    .nav-btn {
+        background-color: white;
+        width: 10rem;
+        margin: 1rem 2rem 0;
+    }
+
+    .nav-form:nth-child(1) {
+        grid-column: 6/7;
+    }
+    .nav-form:nth-child(2) {
+        grid-column: 7/8;
     }
 
     .logo {

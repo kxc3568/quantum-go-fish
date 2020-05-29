@@ -12,7 +12,13 @@ block content
         h3 Quantum Go Fish
         ul.menu
             li
-                a(href="#") How to Play
+                a(href="./how-to-play" target="_blank") How to Play
+                a(href="./about" target="_blank") About
+    header.desktop-header
+        form(action="/how-to-play" class="nav-form" target="_blank")
+            button(type="submit" class="nav-btn") How to Play
+        form(action="/about" class="nav-form" target="_blank")
+            button(type="submit" class="nav-btn") About
     #landing-container.content-container.nav-container
         include logo.pug
         .desktop-landing
