@@ -318,7 +318,11 @@ const makeEntry = (entry) => {
         case "Question":
             return "Question: " + entry.from + " asked " + entry.to + " for " + entry.suit + "s";
         case "Response":
-            return "Response: " + entry.from + " claimed to have no " + entry.suit + "s. Go fish!";
+            if (entry.res === "Yes") {
+                return "Response: " + entry.from + " has a " + entry.suit + " and gave it to " + entry.to + ".";
+            } else {
+                return "Response: " + entry.from + " claimed to have no " + entry.suit + "s. Go fish!";
+            }
         case "Deduction":
             return "Deduction: " + entry.player + " was determined to only have " + entry.number + " more possible " + entry.suit + "(s)!";
         default:

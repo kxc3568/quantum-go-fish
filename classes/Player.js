@@ -37,7 +37,7 @@ class Player {
      * Increments the player's score because they won the game
      */
     win() {
-        this.score += 3;
+        this.score += 2;
     }
 
     /**

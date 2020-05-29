@@ -209,7 +209,7 @@ class Round {
      */
     respond(playerFrom, playerToString, res, suit) {
         const playerTo = this.getPlayer(playerToString);
-        this.history.push({ type: "Response", from: playerToString, to: playerFrom.nickname, suit: suit });
+        this.history.push({ type: "Response", res: res, from: playerToString, to: playerFrom.nickname, suit: suit });
         if (!this.validResponse(playerTo.getHand(), res, suit)) {
             return "Illegal Response";
         }
