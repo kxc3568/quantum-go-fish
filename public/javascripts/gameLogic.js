@@ -148,6 +148,10 @@ const createRemovableTextNode = (text) => {
     return p;
 };
 
+const showGameInProgress = () => {
+    document.getElementById("game-in-progress").style.display = "inline";
+};
+
 /**
  * Updates the lobby player list with the given nickname
  * @param {Player[]} players      The list of current players in the game
@@ -209,6 +213,7 @@ const appendHandToElement = (el, hand, currentPlayer) => {
     playerName.appendChild(h3Name);
 
     const playerHand = document.createElement("div");
+    playerHand.classList.add("player-hand");
     Object.keys(h.determined).forEach((suit) => {
         for (let i = 0; i < h.determined[suit]; i++) {
             playerHand.appendChild(createCard(suit, "determined"));
@@ -388,7 +393,7 @@ const updateWinner = (winner) => {
     playerResult.appendChild(createRemovableTextNode("what a big brain!"));
     const scoreResult = document.getElementsByClassName("score-result")[0];
     removeAllChildrenWithClass(scoreResult, "");
-    scoreResult.appendChild(createRemovableTextNode(winner + " has earned 3 points."));
+    scoreResult.appendChild(createRemovableTextNode(winner + " has earned 2 points."));
 };
 
 /**
@@ -414,6 +419,7 @@ const updateLoser = (loser) => {
 const socketInit = () => {
     socket.on("Room Code", code => populateCode(code));
     socket.on("Joined Game", data => processJoinResults(data));
+    socket.on("In Progress", showGameInProgress);
     socket.on("Update Players", players => updatePlayerList(players));
     socket.on("Game Started", data => processStartGame(data));
     socket.on("Update Hands", hands => updateHands(hands));

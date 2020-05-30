@@ -52,6 +52,7 @@ block content
                 label(for="code") Room Code:
                 input(type="text" name="code" placeholder="Enter your game code" id="join-code" oninput="updateJoinButton();" maxlength="4")
                 span(id="invalid-game-code") The game you're looking for doesn't exist.
+                span(id="game-in-progress") The game you're looking for has started already.
             .nav-inputs.horiz-center
                 label(for="joinName") Name:
                 input(type="text" name="joinName" placeholder="Enter your name" id="join-name" oninput="updateJoinButton();" maxlength="15")
@@ -86,6 +87,7 @@ block content
             #turn-container
                 #turn-text
                 #question-container
+                    p Ask a player for a card!
                     .select
                         label(for="player-select") Select a player: 
                         select(name="player-select" id="player-select")

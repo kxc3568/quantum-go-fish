@@ -6,6 +6,7 @@ class Round {
         this.turn = Math.floor(Math.random() * players.length);
         this.history = [];
         this.settings = settings;
+        this.inProgress = false;
         this.startRound();
     }
 
@@ -29,6 +30,10 @@ class Round {
 
     getHistory() {
         return this.history;
+    }
+
+    isInProgress() {
+        return this.inProgress;
     }
 
     /**
@@ -69,6 +74,7 @@ class Round {
      * Initialize starting settings and hands for the round
      */
     startRound() {
+        this.inProgress = true;
         let suits = Array(this.players.length);
         for (let i = 0; i < suits.length; i++) {
             const iStr = (i+1).toString();
@@ -186,6 +192,7 @@ class Round {
         this.history.push({ type: "Question", from: playerFromString, to: playerToString, suit: suit });
         if (!this.validQuestion(playerFrom.getHand(), suit)) {
             playerFrom.madeIllegalMove();
+            this.inProgress = false;
             return "Illegal Question";
         }
         if (playerFromHand.determined[suit] === 0) {
@@ -194,6 +201,7 @@ class Round {
             this.makeDeductions();
             if (this.checkWinConditions()) {
                 playerFrom.win();
+                this.inProgress = false;
                 return playerFromString;
             }
         }
@@ -213,6 +221,7 @@ class Round {
         this.history.push({ type: "Response", res: res, from: playerToString, to: playerFrom.nickname, suit: suit });
         if (!this.validResponse(playerTo.getHand(), res, suit)) {
             playerTo.madeIllegalMove();
+            this.inProgress = false;
             return "Illegal Response";
         }
         if (res === "Yes") {
@@ -229,6 +238,7 @@ class Round {
         this.makeDeductions();
         if (this.checkWinConditions()) {
             playerFrom.win();
+            this.inProgress = false;
             return playerFrom.nickname;
         }
         return "";

@@ -7,14 +7,16 @@ const onCreateGame = (app, data, clientSocket) => {
 };
 
 const onJoinGame = (app, data, clientSocket) => {
-    clientSocket.join(data.code);
     clientSocket.room = data.code;
     const game = app.gm.getGame(clientSocket.room);
     if (game === undefined) {
         app.io.to(clientSocket.id).emit("Joined Game", { success: false, message: "Code" });
     } else if (game.containsPlayer(data.nickname)) {
         app.io.to(clientSocket.id).emit("Joined Game", { success: false, message: "Name" });
+    } else if (game.getRound() !== null && game.getRound().isInProgress()) {
+        app.io.to(clientSocket.id).emit("In Progress");
     } else {
+        clientSocket.join(data.code);
         game.addPlayer(data.sid, data.nickname);
         const players = game.getPlayers();
         app.io.to(clientSocket.id).emit("Joined Game", { success: true, message: "" });
