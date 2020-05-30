@@ -42,7 +42,7 @@ const processJoinResults = (data) => {
  * @param {String} nickname     The proposed nickname
  */
 const validName = (nickname) => {
-    if (nickname.length > 1 && nickname.length < 16) {
+    if (nickname.length > 1 && nickname.length < 21) {
         return true;
     }
     return false;
@@ -416,7 +416,6 @@ const socketInit = () => {
     socket.on("Joined Game", data => processJoinResults(data));
     socket.on("Update Players", players => updatePlayerList(players));
     socket.on("Game Started", data => processStartGame(data));
-    // socket.on("Disable History", disableHistory);
     socket.on("Update Hands", hands => updateHands(hands));
     socket.on("Update Turn", player => updateTurn(player));
     socket.on("Update History", history => updateHistory(history));

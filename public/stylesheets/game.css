@@ -76,6 +76,10 @@
     grid-template-columns: repeat(2, 1fr);
 }
 
+.scores p {
+    padding: 0 1rem;
+}
+
 .history {
     margin: 0 0.5rem;
 }
@@ -100,7 +104,7 @@
 }
 
 .player-name {
-    max-width: 6rem;
+    max-width: 10rem;
 }
 
 .player-name h3 {
@@ -186,7 +190,7 @@
         overflow-y: auto;
     }
 
-    .hands-container div:nth-child(1) {
-        margin-bottom: 3rem;
+    #current-player, .other-player {
+        margin-bottom: 2rem;
     }
 }

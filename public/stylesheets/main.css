@@ -144,7 +144,7 @@ button:hover {
 }
 
 .submit-btn button {
-    min-width: 260px;
+    min-width: 225px;
 }
 
 .nav-inputs {
@@ -164,7 +164,7 @@ button:hover {
     font-size: 1rem;
 }
 
-@media (min-width: 1024px) {
+@media (min-width: 768px) {
     .mobile-header {
         display: none;
     }
@@ -211,5 +211,15 @@ button:hover {
         display: flex;
         flex-direction: column;
         align-items: center;
+    }
+}
+
+@media (min-width: 768px) and (max-width: 960px) and (orientation: landscape) {
+    .logo {
+        display: none;
+    }
+
+    .nav-btn {
+        margin-bottom: 2rem;
     }
 }

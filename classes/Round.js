@@ -185,6 +185,7 @@ class Round {
         const playerFromHand = playerFrom.getHand();
         this.history.push({ type: "Question", from: playerFromString, to: playerToString, suit: suit });
         if (!this.validQuestion(playerFrom.getHand(), suit)) {
+            playerFrom.madeIllegalMove();
             return "Illegal Question";
         }
         if (playerFromHand.determined[suit] === 0) {
@@ -211,6 +212,7 @@ class Round {
         const playerTo = this.getPlayer(playerToString);
         this.history.push({ type: "Response", res: res, from: playerToString, to: playerFrom.nickname, suit: suit });
         if (!this.validResponse(playerTo.getHand(), res, suit)) {
+            playerTo.madeIllegalMove();
             return "Illegal Response";
         }
         if (res === "Yes") {
