@@ -20,18 +20,6 @@ const toStartView = () => {
 };
 
 /**
- * Starts the game or displays an error depending on data received from the server
- * @param {Object} data     Contains details about the response of the start game attempt
- */
-const processStartGame = (data) => {
-    if (data.success) {
-        toStartView();
-    } else {
-        
-    }
-};
-
-/**
  * Shows the lobby or an error depending on data received from the server
  * @param {Object} data     Contains details about the response of the join attempt
  */
