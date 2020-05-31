@@ -1,8 +1,9 @@
 extends layout
 
 block styles
-    link(rel="stylesheet", href="/stylesheets/game.css")
+    link(rel="stylesheet", href="/stylesheets/header.css")
     link(rel="stylesheet", href="/stylesheets/main.css")
+    link(rel="stylesheet", href="/stylesheets/game.css")
 
 block content
     header.mobile-header
@@ -67,13 +68,13 @@ block content
                 .score-history-label
                     button(type="button" onclick="toggleScores();" class="score-history-label-button") View Scores
                     .score-history-label-div View Scores
-                .scores
+                .scores.center-within
             .history-container
                 .score-history-label
                     button(type="button" onclick="toggleHistory();" class="score-history-label-button") View History
                     .score-history-label-div View History
                 .history
-        section.round-container
+        section.round-container.center-within
             h1.add-code
             .lobby-container
                 .game-end
