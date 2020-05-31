@@ -27,7 +27,7 @@ const processStartGame = (data) => {
     if (data.success) {
         toStartView();
     } else {
-        document.getElementById("more-player-error").style.display = "inline";
+        
     }
 };
 
@@ -99,7 +99,11 @@ const joinGame = () => {
  * Pings the server socket to start the game for all players
  */
 const startGame = () => {
-    socket.emit("Start Game");
+    if (document.getElementById("player-list").children.length < 2) {
+        document.getElementById("more-player-error").style.display = "inline";
+    } else {
+        socket.emit("Start Game");
+    }
 };
 
 /**
@@ -458,7 +462,7 @@ const socketInit = () => {
     socket.on("Joined Game", data => processJoinResults(data));
     socket.on("In Progress", showGameInProgress);
     socket.on("Update Players", players => updatePlayerList(players));
-    socket.on("Game Started", data => processStartGame(data));
+    socket.on("Game Started", toStartView);
     socket.on("Update Hands", hands => updateHands(hands));
     socket.on("Update Turn", player => updateTurn(player));
     socket.on("Update History", history => updateHistory(history));

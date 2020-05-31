@@ -27,18 +27,14 @@ const onJoinGame = (app, data, clientSocket) => {
 
 const onStartGame = (app, clientSocket) => {
     const game = app.gm.startGame(clientSocket.room);
-    if (game.getPlayers().length < 2) {
-        app.io.in(clientSocket.room).emit("Game Started", { success: false })
-    } else {
-        app.io.in(clientSocket.room).emit("Game Started", { success: true });
-        const round = game.getRound();
-        app.io.in(clientSocket.room).emit("Update Hands", round.getHands());
-        app.io.in(clientSocket.room).emit("Update Turn", round.getPlayers()[round.advanceTurn()]);
-        if (!round.getSettings().showHistory) {
-            round.getHistory().push({ type: "Disabled" });
-        }
-        app.io.in(clientSocket.room).emit("Update History", round.getHistory());
+    app.io.in(clientSocket.room).emit("Game Started");
+    const round = game.getRound();
+    app.io.in(clientSocket.room).emit("Update Hands", round.getHands());
+    app.io.in(clientSocket.room).emit("Update Turn", round.getPlayers()[round.advanceTurn()]);
+    if (!round.getSettings().showHistory) {
+        round.getHistory().push({ type: "Disabled" });
     }
+    app.io.in(clientSocket.room).emit("Update History", round.getHistory());
 };
 
 const onQuestion = (app, data, clientSocket) => {
