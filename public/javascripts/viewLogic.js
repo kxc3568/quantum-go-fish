@@ -61,7 +61,6 @@ const toggleScores = () => {
     } else {
         scores.style.display = "none";
     }
-    
 };
 
 const toggleHistory = () => {

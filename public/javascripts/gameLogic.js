@@ -1,3 +1,7 @@
+//
+// SOCKET EMISSION FUNCTIONS
+//
+
 /**
  * Changes to the view of the game lobby
  */
@@ -7,17 +11,21 @@ const toLobbyView = () => {
     toShow.style.display = "";
 };
 
+const toStartView = () => {
+    document.getElementsByClassName("hands-container")[0].style.display = "";
+    document.getElementsByClassName("round-container")[0].style.display = "none";
+    document.getElementsByClassName("history-container")[0].style.display = "flex";
+    document.getElementsByClassName("score-container")[0].style.display = "flex";
+    document.getElementsByClassName("score-history-container")[0].style.display = "";
+};
+
 /**
  * Starts the game or displays an error depending on data received from the server
  * @param {Object} data     Contains details about the response of the start game attempt
  */
 const processStartGame = (data) => {
     if (data.success) {
-        document.getElementsByClassName("hands-container")[0].style.display = "";
-        document.getElementsByClassName("round-container")[0].style.display = "none";
-        document.getElementsByClassName("history-container")[0].style.display = "flex";
-        document.getElementsByClassName("score-container")[0].style.display = "flex";
-        document.getElementsByClassName("score-history-container")[0].style.display = "";
+        toStartView();
     } else {
         document.getElementById("more-player-error").style.display = "inline";
     }
@@ -115,7 +123,7 @@ const answerQuestion = () => {
 };
 
 //
-// SOCKET FUNCTIONS
+// SOCKET LISTENER FUNCTIONS
 //
 
 /**
@@ -152,6 +160,16 @@ const showGameInProgress = () => {
     document.getElementById("game-in-progress").style.display = "inline";
 };
 
+const addPlayersAndScores = (playerList, scoresList, players) => {
+    players.forEach((player) => {
+        const playerItem = document.createElement("li");
+        playerItem.appendChild(document.createTextNode(player.nickname));
+        playerList.appendChild(playerItem);
+        scoresList.appendChild(createRemovableTextNode(player.nickname));
+        scoresList.appendChild(createRemovableTextNode(player.score));
+    });
+};
+
 /**
  * Updates the lobby player list with the given nickname
  * @param {Player[]} players      The list of current players in the game
@@ -161,13 +179,8 @@ const updatePlayerList = (players) => {
     removeAllChildrenWithClass(playerList, "");
     const scoresList = document.getElementsByClassName("scores")[0];
     removeAllChildrenWithClass(scoresList, "");
-    players.forEach((player) => {
-        const playerItem = document.createElement("li");
-        playerItem.appendChild(document.createTextNode(player.nickname));
-        playerList.appendChild(playerItem);
-        scoresList.appendChild(createRemovableTextNode(player.nickname));
-        scoresList.appendChild(createRemovableTextNode(player.score));
-    });
+
+    addPlayersAndScores(playerList, scoresList, players);
     if (players.length === 1) {
         document.getElementById("more-player-error").style.display = "inline";
     } else {
@@ -182,6 +195,15 @@ const disableHistory = () => {
     historyDisabled = true;
 };
 
+const createPlayerName = (nickname) => {
+    const playerName = document.createElement("div");
+    playerName.classList.add("player-name");
+    const h3Name = document.createElement("h3");
+    h3Name.innerHTML = nickname;
+    playerName.appendChild(h3Name);
+    return playerName;
+};
+
 /**
  * 
  * @param {String} suit 
@@ -192,12 +214,37 @@ const createCard = (suit, status) => {
     card.classList.add("card", status);
     const centerCard = document.createElement("div");
     centerCard.classList.add("card-center");
-    const text = document.createElement("p");
-    text.innerHTML = suit;
-    centerCard.appendChild(text);
+    centerCard.appendChild(createRemovableTextNode(suit));
     card.appendChild(centerCard);
     return card;
 };
+
+const addDetermined = (playerHand, determined) => {
+    Object.keys(determined).forEach((suit) => {
+        for (let i = 0; i < determined[suit]; i++) {
+            playerHand.appendChild(createCard(suit, "determined"));
+        }
+    });
+};
+
+const addUndetermined = (playerHand, undetermined) => {
+    undetermined.forEach(possibleSuits => {
+        const undeterminedText = possibleSuits[0].join(", ");
+        for (let i = 0; i < possibleSuits[1]; i++) {
+            playerHand.appendChild(createCard(undeterminedText, "undetermined"));
+        }
+    });
+};
+
+const createPlayerHand = (hand) => {
+    const playerHand = document.createElement("div");
+    playerHand.classList.add("player-hand");
+
+    addDetermined(playerHand, hand.determined);
+    addUndetermined(playerHand, hand.undetermined);
+    return playerHand;
+};
+
 /**
  * Adds the list of cards in hand to the HTML element
  * @param {HTMLElement} el          The HTML Element to append hand markup to
@@ -205,30 +252,9 @@ const createCard = (suit, status) => {
  * @param {Boolean} currentPlayer   Whether the hand is of this socket's player
  */
 const appendHandToElement = (el, hand, currentPlayer) => {
-    const h = hand.hand;
-    const playerName = document.createElement("div");
-    playerName.classList.add("player-name");
-    const h3Name = document.createElement("h3");
-    h3Name.innerHTML = hand.nickname;
-    playerName.appendChild(h3Name);
-
-    const playerHand = document.createElement("div");
-    playerHand.classList.add("player-hand");
-    Object.keys(h.determined).forEach((suit) => {
-        for (let i = 0; i < h.determined[suit]; i++) {
-            playerHand.appendChild(createCard(suit, "determined"));
-        }
-    });
-    h.undetermined.forEach(possibleSuits => {
-        const undeterminedText = possibleSuits[0].join(", ");
-        for (let i = 0; i < possibleSuits[1]; i++) {
-            playerHand.appendChild(createCard(undeterminedText, "undetermined"));
-        }
-    });
-    
     const player = document.createElement("div");
-    player.appendChild(playerName);
-    player.appendChild(playerHand);
+    player.appendChild(createPlayerName(hand.nickname));
+    player.appendChild(createPlayerHand(hand.hand));
     if (currentPlayer) {
         player.classList.add("other-player");
     }
@@ -242,6 +268,7 @@ const appendHandToElement = (el, hand, currentPlayer) => {
 const updateHands = (hands) => {
     const handList = document.getElementsByClassName("hands-container")[0];
     removeAllChildrenWithClass(handList, "other-player");
+
     Object.keys(hands).forEach((sid) => {
         if (sid == socket.id) {
             const yourHand = document.getElementById("current-player");
@@ -259,7 +286,7 @@ const updateHands = (hands) => {
  * @param {String} optionName       The name of the option element to add
  */
 const addOption = (select, optionName) => {
-    let opt = document.createElement("OPTION");
+    let opt = document.createElement("option");
     opt.setAttribute("value", optionName);
     opt.innerHTML = optionName;
     select.appendChild(opt);
@@ -278,9 +305,9 @@ const addOptions = (select, optionNames) => {
  * Adds options to the player and suit selectors
  */
 const populateSelectors = () => {
+    const playerList = document.getElementById("player-list");
     const playerSelect = document.getElementById("player-select");
     const suitSelect = document.getElementById("suit-select");
-    const playerList = document.getElementById("player-list");
     const playerNames = Array.from(playerList.children).map(el => el.innerHTML).filter(el => el !== socket.nickname);
     const suitNames = [...Array(playerList.children.length).keys()].map(el => el + 1);
     addOptions(playerSelect, playerNames);
@@ -304,6 +331,7 @@ const updateTurn = (player) => {
     const turnTextContainer = document.getElementById("turn-text");
     const questionContainer = document.getElementById("question-container");
     removeAllChildrenWithClass(turnTextContainer, "");
+
     let turnText;
     if (player.sid == socket.id) {
         turnText = "Your turn";
@@ -338,6 +366,7 @@ const makeEntry = (entry) => {
 const updateHistory = (history) => {
     const historyContainer = document.getElementsByClassName("history")[0]; 
     removeAllChildrenWithClass(historyContainer, "");
+
     if (history.length === 0) {
         historyContainer.appendChild(createRemovableTextNode("Make a move to see the history!"))
     } else if (history[0].type === "Disabled") {
@@ -355,6 +384,15 @@ const clearQuestion = () => {
     questionContainer.style.display = "none";
 };
 
+const showResponseSelect = () => {
+    const responseSelect = document.getElementById("response-select");
+    if (responseSelect.children.length == 0) {
+        addOption(responseSelect, "Yes");
+        addOption(responseSelect, "No");
+    }
+    document.getElementById("response-select-container").style.display = "block";
+};
+
 /**
  * Updates the response container with response decisions for all players
  * @param {Object} question     Data about the question and players involved
@@ -366,12 +404,7 @@ const updateQuestion = (question) => {
     if (question.questionTo === socket.nickname) {
         text = question.questionFrom + " asks if you have any " + question.suit + "s.";
         responseTextContainer.appendChild(createRemovableTextNode(text));
-        const responseSelect = document.getElementById("response-select");
-        if (responseSelect.children.length == 0) {
-            addOption(responseSelect, "Yes");
-            addOption(responseSelect, "No");
-        }
-        document.getElementById("response-select-container").style.display = "block";
+        showResponseSelect();
     } else {
         text = "Waiting for " + question.questionTo + " to determine if he/she has any " + question.suit + "s...";
         responseTextContainer.appendChild(createRemovableTextNode(text));
@@ -387,10 +420,12 @@ const updateWinner = (winner) => {
     document.getElementsByClassName("round-container")[0].style.display = "block";
     document.getElementsByClassName("hands-container")[0].style.display = "none";
     document.getElementsByClassName("game-end")[0].style.display = "flex";
+
     const playerResult = document.getElementsByClassName("player-result")[0];
     removeAllChildrenWithClass(playerResult, "");
     playerResult.appendChild(createRemovableTextNode(winner + " has won 🤩"));
     playerResult.appendChild(createRemovableTextNode("what a big brain!"));
+
     const scoreResult = document.getElementsByClassName("score-result")[0];
     removeAllChildrenWithClass(scoreResult, "");
     scoreResult.appendChild(createRemovableTextNode(winner + " has earned 2 points."));
@@ -404,10 +439,12 @@ const updateLoser = (loser) => {
     document.getElementsByClassName("round-container")[0].style.display = "block";
     document.getElementsByClassName("hands-container")[0].style.display = "none";
     document.getElementsByClassName("game-end")[0].style.display = "flex";
+
     const playerResult = document.getElementsByClassName("player-result")[0];
     removeAllChildrenWithClass(playerResult, "");
     playerResult.appendChild(createRemovableTextNode("oh no 🤒"));
     playerResult.appendChild(createRemovableTextNode(loser + " has made an illegal move!"));
+
     const scoreResult = document.getElementsByClassName("score-result")[0];
     removeAllChildrenWithClass(scoreResult, "");
     scoreResult.appendChild(createRemovableTextNode(loser + " has lost 1 point."));
@@ -441,6 +478,6 @@ const viewInit = () => {
 };
 
 const socket = io.connect();
-socketInit(socket);
+socketInit();
 let historyDisabled = false;
 viewInit();
