@@ -1,0 +1,74 @@
+button {
+    background-color: var(--color-main);
+    border: 1px solid black;
+    font-size: 1rem;
+    padding: 0.75rem;
+    margin: 1.5rem;
+}
+
+#create-game-container, #join-game-container, .nav-inputs span, .desktop-landing {
+    display: none;
+}
+
+.logo {
+    width: 70vw;
+    margin: 5rem 0;
+}
+
+.nav-container {
+    display: flex;
+    flex-direction: column;
+    width: 80vw;
+    margin: 0 auto;
+    align-items: center;
+}
+
+.submit-btn button {
+    min-width: 225px;
+}
+
+@media (min-width: 768px) {
+    button:hover {
+        border-style: dashed;
+    }
+
+    .nav-btn {
+        background-color: white;
+        width: 10rem;
+        margin: 1rem 2rem 0;
+    }
+
+    .nav-form:nth-child(1) {
+        grid-column: 6/7;
+    }
+
+    .nav-form:nth-child(2) {
+        grid-column: 7/8;
+    }
+
+    .logo {
+        width: 30vw;
+    }
+
+    .desktop-landing {
+        display: block;
+    }
+
+    .nav-container {
+        justify-content: center;
+    }
+
+    .submit-btn button {
+        display: inline;
+    }
+}
+
+@media (min-width: 768px) and (max-width: 960px) and (orientation: landscape) {
+    .logo {
+        display: none;
+    }
+
+    .nav-btn {
+        margin-bottom: 2rem;
+    }
+}

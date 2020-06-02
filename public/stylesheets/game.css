@@ -3,58 +3,9 @@
     justify-content: center;
 }
 
-.center-within {
-    margin: 0 auto;
-}
-
-.hands-container, .history-container, .score-container, #question-container, #response-text, #response-select-container {
-    display: none;
-}
-
-.game-container {
-    display: block;
-    flex-direction: row;
-    width: 80vw;
-    margin: 0.5rem auto 0;
-}
-
 /*
     SCORES, HISTORY, LOBBY
 */
-
-.score-history-container {
-    display: flex;
-    flex-direction: column;
-}
-
-.history-container, .score-container, .lobby-container {
-    flex-direction: column;
-}
-
-.history-container, .score-container {
-    border: 1px solid black;
-}
-
-.history-container {
-    margin-top: 1rem;
-}
-
-.score-history-label-button, .score-history-label-div {
-    font-size: 1.25rem;
-    background-color: var(--color-main);
-    border-bottom: 1px solid black;
-    padding: 0 2rem;
-    margin: 0;
-    width: 100%;
-}
-
-.score-history-label-button {
-    display: block;
-}
-
-.score-history-label-div {
-    display: none;
-}
 
 .scores, .history {
     display: flex;
@@ -78,19 +29,9 @@
     margin: 0 0.5rem;
 }
 
-.lobby-container {
-    display: flex;
-}
-
 /*
     PLAYERS, HANDS, TURNS
 */
-
-.hands-container {
-    display: flex;
-    flex-direction: column;
-    width: 80vw;
-}
 
 .player-name {
     max-width: 10rem;
@@ -135,50 +76,7 @@
     font-size: 0.75rem;
 }
 
-#question-container {
-    flex-direction: column;
-}
-
-.game-end {
-    display: none;
-    flex-direction: column;
-    align-items: center;
-}
-
 @media (min-width: 1024px) {
-    .game-container {
-        display: flex;
-        width: 80vw;
-        margin: 3rem auto 0;
-    }
-
-    .score-history-container {
-        margin-right: 4rem;
-        width: 40%;
-    }
-
-    .score-history-label-button {
-        display: none;
-    }
-    
-    .score-history-label-div {
-        display: block;
-    }
-
-    .lobby-container {
-        width: 40vw;
-    }
-
-    .hands-container {
-        display: grid;
-        grid-template-columns: repeat(2, 1fr);
-        border: 1px solid black;
-        padding: 1rem;
-        max-height: 80vh;
-        overflow-x: hidden;
-        overflow-y: auto;
-    }
-
     #current-player, .other-player {
         margin-bottom: 2rem;
     }

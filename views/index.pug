@@ -1,9 +1,22 @@
 extends layout
 
+block meta
+    meta(name="Description" content="A page that has multiple game rooms and facilitates the playing of the game Quantum Go Fish")
+
 block styles
-    link(rel="stylesheet", href="/stylesheets/header.css")
-    link(rel="stylesheet", href="/stylesheets/main.css")
-    link(rel="stylesheet", href="/stylesheets/game.css")
+    link(rel="stylesheet", href="/stylesheets/header-ip.css")
+    link(rel="stylesheet", href="/stylesheets/main-ip.css")
+    link(rel="stylesheet", href="/stylesheets/game-ip.css")
+    link(rel="preload" href="/stylesheets/header.css" as="style" onload="this.onload=null;this.rel='stylesheet'")
+    noscript
+        link(rel="stylesheet" href="/stylesheets/header.css")
+    link(rel="preload" href="/stylesheets/main.css" as="style" onload="this.onload=null;this.rel='stylesheet'")
+    noscript
+        link(rel="stylesheet" href="/stylesheets/main.css")
+    link(rel="preload" href="/stylesheets/game.css" as="style" onload="this.onload=null;this.rel='stylesheet'")
+    noscript
+        link(rel="stylesheet" href="/stylesheets/game.css")
+    
 
 block content
     header.mobile-header
@@ -14,11 +27,11 @@ block content
         ul.menu
             li
                 a(href="./how-to-play" target="_blank") How to Play
-                a(href="https://github.com/kxc3568/quantum-go-fish" target="_blank") GitHub
+                a(href="https://github.com/kxc3568/quantum-go-fish" target="_blank" rel="noreferrer") GitHub
     header.desktop-header
         form(action="/how-to-play" class="nav-form" target="_blank")
             button(type="submit" class="nav-btn") How to Play
-        form(action="https://github.com/kxc3568/quantum-go-fish" class="nav-form" target="_blank")
+        form(action="https://github.com/kxc3568/quantum-go-fish" class="nav-form" target="_blank" rel="noreferrer")
             button(type="submit" class="nav-btn") GitHub
     #landing-container.content-container.nav-container
         include logo.pug
@@ -109,4 +122,5 @@ block content
 
 block scripts
     script(src="/socket.io/socket.io.js")
-    script(src="/javascripts/gameLogic.js")
+    script(src="/javascripts/gameLogic-ip.js")
+    script(src="/javascripts/gameLogic.js" async)
