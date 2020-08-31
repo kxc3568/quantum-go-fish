@@ -178,7 +178,7 @@ const createGame = () => {
  * there is a valid name entered. Displays an error otherwise.
  */
 const joinGame = () => {
-    const code = document.getElementById("join-code").value;
+    const code = document.getElementById("join-code").value.toLowerCase();
     const nickname = document.getElementById("join-name").value;
     if (validName(nickname)) {
         socket.nickname = nickname;
