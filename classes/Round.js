@@ -174,12 +174,21 @@ class Round {
         return hand.undetermined.filter(posSuits => posSuits[0].indexOf(suit) > -1).length > 0;
     }
 
-    validResponse(hand, res, suit) {
+    validResponse(playerAnswering res, suit) {
         if (res === "Yes") {
-            return this.validQuestion(hand, suit);
+            return this.validQuestion(playerAnswering.getHand(), suit);
         }
-        return hand.determined[suit] === 0;
+        // count the number of card of this suit that could be in other player's hands. If there are less than 4, player cannot answer that he does not have this suit.
+        int cardsRemaining = 0;
+        this.players.forEach(player => {
+            if (player != playerAnswering) {
+                const otherHand = player.getHand();
+                cardsRemaining += otherHand.determined[suit] + otherHand.undetermined.filter(posSuits => posSuits[0].indexOf(suit) > -1).length;
+            }
+        };
+        return cardsRemaining >= 4;
     }
+
 
     /**
      * Determines values of playerFrom's hand based on the question
@@ -219,7 +228,7 @@ class Round {
     respond(playerFrom, playerToString, res, suit) {
         const playerTo = this.getPlayer(playerToString);
         this.history.push({ type: "Response", res: res, from: playerToString, to: playerFrom.nickname, suit: suit });
-        if (!this.validResponse(playerTo.getHand(), res, suit)) {
+        if (!this.validResponse(playerTo, res, suit)) {
             playerTo.madeIllegalMove();
             this.inProgress = false;
             return "Illegal Response";
